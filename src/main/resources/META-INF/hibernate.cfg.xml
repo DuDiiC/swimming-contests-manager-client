@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- datasource config -->
+        <property name="connection.url">jdbc:oracle:thin:@oraas:1521:ora2018</property>
+        <property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+        <property name="dialect">org.hibernate.dialect.Oracle12cDialect</property>
+
+        <!-- about user -->
+
+<!--        <property name="connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>-->
+        <property name="hibernate.c3p0.acquire_increment">1</property>
+        <property name="hibernate.c3p0.idle_test_period">60</property>
+        <property name="hibernate.c3p0.min_size">1</property>
+        <property name="hibernate.c3p0.max_size">2</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.timeout">0</property>
+        <property name="hibernate.c3p0.acquireRetryAttempts">1</property>
+        <property name="hibernate.c3p0.acquireRetryDelay">250</property>
+
+        <!-- models -->
+        <mapping class="dbModels.Club" />
+        <mapping class="dbModels.Trainer" />
+        <mapping class="dbModels.Competition" />
+        <mapping class="dbModels.Record" />
+        <mapping class="dbModels.Competitor" />
+        <mapping class="dbModels.Contest" />
+
+
+
+    </session-factory>
+</hibernate-configuration>
