@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContestController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="150.0" prefWidth="100.0">
+         <children>
+            <Label text="Dodaj zawody">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font></Label>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <Label text="Nazwa" />
+                  <TextField fx:id="nameTextField" />
+                  <Label text="Miasto" />
+                  <TextField fx:id="cityTextField" />
+                  <Label text="Data" />
+                  <DatePicker fx:id="dateField" />
+                  <Button fx:id="addContestButton" mnemonicParsing="false" onAction="#addContest" text="Dodaj" />
+               </children></HBox>
+            <Label text="Usuń zawody">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <ComboBox fx:id="contestComboBox" prefHeight="25.0" prefWidth="376.0" promptText="wybierz zawody do usunięcia" />
+                  <Button fx:id="deleteContestButton" mnemonicParsing="false" onAction="#deleteContest" text="Usuń" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TableView fx:id="contestTableView" onMouseClicked="#selectedInfo" prefHeight="200.0" prefWidth="800.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" prefWidth="289.0" text="Nazwa" />
+          <TableColumn fx:id="cityColumn" prefWidth="257.0" text="Miasto" />
+            <TableColumn fx:id="dateColumn" prefWidth="253.0" text="Data i godzina" />
+        </columns>
+      </TableView>
+      <HBox prefHeight="220.0" prefWidth="800.0">
+         <children>
+            <TableView fx:id="competitorTableView" prefHeight="250.0" prefWidth="400.0">
+              <columns>
+                <TableColumn fx:id="competitorColumn" prefWidth="400.0" text="Zawodnicy zapisani na zawody" />
+              </columns>
+            </TableView>
+            <TableView fx:id="competitionTableView" prefHeight="250.0" prefWidth="400.0">
+              <columns>
+                <TableColumn fx:id="competitionColumn" prefWidth="400.0" text="Konkurencje w ramach zawodów" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="400.0" spacing="20.0">
+               <children>
+                  <Button fx:id="deleteCompetitorFromContestButton" mnemonicParsing="false" onAction="#deleteCompetitorFromContest" text="Usuń zaznaczonego" />
+                  <Button fx:id="deleteAllCompetitorsFromContestButton" mnemonicParsing="false" onAction="#deleteAllCompetitorsFromContest" text="Usuń wszystkich" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="400.0" spacing="20.0">
+               <children>
+                  <Button fx:id="deleteCompetitionFromContestButton" mnemonicParsing="false" onAction="#deleteCompetitionFromContest" text="Usuń zaznaczoną" />
+                  <Button fx:id="deleteAllCompetitionsFromContestButton" mnemonicParsing="false" onAction="#deleteAllCompetitionsFromContest" text="Usuń wszystkich" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
