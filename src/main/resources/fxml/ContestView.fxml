@@ -37,7 +37,7 @@
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="600.0" spacing="20.0">
                <children>
                   <ComboBox fx:id="contestComboBox" prefHeight="25.0" prefWidth="376.0" promptText="wybierz zawody do usunięcia" />
-                  <Button fx:id="deleteContestButton" mnemonicParsing="false" onAction="#deleteContest" text="Usuń" />
+                  <Button fx:id="deleteContestButton" mnemonicParsing="false" onAction="#removeContest" text="Usuń" />
                </children>
             </HBox>
          </children>
@@ -67,14 +67,14 @@
          <children>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="400.0" spacing="20.0">
                <children>
-                  <Button fx:id="deleteCompetitorFromContestButton" mnemonicParsing="false" onAction="#deleteCompetitorFromContest" text="Usuń zaznaczonego" />
-                  <Button fx:id="deleteAllCompetitorsFromContestButton" mnemonicParsing="false" onAction="#deleteAllCompetitorsFromContest" text="Usuń wszystkich" />
+                  <Button fx:id="deleteCompetitorFromContestButton" mnemonicParsing="false" onAction="#removeCompetitorFromContest" text="Usuń zaznaczonego" />
+                  <Button fx:id="deleteAllCompetitorsFromContestButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromContest" text="Usuń wszystkich" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="400.0" spacing="20.0">
                <children>
-                  <Button fx:id="deleteCompetitionFromContestButton" mnemonicParsing="false" onAction="#deleteCompetitionFromContest" text="Usuń zaznaczoną" />
-                  <Button fx:id="deleteAllCompetitionsFromContestButton" mnemonicParsing="false" onAction="#deleteAllCompetitionsFromContest" text="Usuń wszystkich" />
+                  <Button fx:id="deleteCompetitionFromContestButton" mnemonicParsing="false" onAction="#removeCompetitionFromContest" text="Usuń zaznaczoną" />
+                  <Button fx:id="deleteAllCompetitionsFromContestButton" mnemonicParsing="false" onAction="#removeAllCompetitionsFromContest" text="Usuń wszystkich" />
                </children>
             </HBox>
          </children>

@@ -26,7 +26,7 @@
                   <TextField fx:id="cityTextField" />
                   <Button fx:id="addClubButton" mnemonicParsing="false" onAction="#addClub" text="Dodaj" />
                   <ComboBox fx:id="clubComboBox" prefWidth="150.0" />
-                  <Button fx:id="deleteClubButton" mnemonicParsing="false" onAction="#deleteClub" text="Usuń" />
+                  <Button fx:id="deleteClubButton" mnemonicParsing="false" onAction="#removeClub" text="Usuń" />
                </children>
             </HBox>
          </children>

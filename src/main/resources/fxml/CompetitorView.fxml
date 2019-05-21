@@ -56,7 +56,7 @@
                   <ComboBox fx:id="clubComboBox2" onAction="#setCompetitors" prefWidth="150.0" />
                   <Label text="Zawodnik" />
                   <ComboBox fx:id="competitorComboBox" prefWidth="150.0" />
-                  <Button fx:id="deleteCompetitorButton" mnemonicParsing="false" onAction="#deleteCompetitor" text="Usuń" />
+                  <Button fx:id="deleteCompetitorButton" mnemonicParsing="false" onAction="#removeCompetitor" text="Usuń" />
                </children>
             </HBox>
          </children>
