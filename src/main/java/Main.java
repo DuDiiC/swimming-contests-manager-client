@@ -18,9 +18,7 @@ public class Main extends Application {
         BorderPane borderPane = loader.load();
         Scene scene = new Scene(borderPane);
 
-        // add hibernate
-//        Configuration configuration = new Configuration().configure("/hibernate/hibernate.cfg.xml");
-//        SessionFactory sessionFactory = configuration.buildSessionFactory();
+        // set database connection
         HibernateUtil.createEM();
 
         // set theme
@@ -33,12 +31,6 @@ public class Main extends Application {
         primaryStage.setTitle("Aplikacja bazodanowa");
         primaryStage.show();
 
-         /* przyklad dodania wartosci do bazy
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(new Contest("MP Juniors", Date.valueOf("2019-03-12"), "Dębica"));
-        session.getTransaction().commit();
-        session.close();
-         */
+
     }
 }
