@@ -37,7 +37,7 @@ public class Competition implements Serializable {
 
     @Override
     public String toString() {
-        return style + " " + distance.toString() + "m";
+        return style + " " + distance.toString() + "m " + gender;
     }
 
     public long getCompetitionId() {
