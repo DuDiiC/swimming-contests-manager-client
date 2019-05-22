@@ -65,22 +65,27 @@ public class RegistrationController implements Initializable {
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
     }
 
-    // TODO !!! NAPRAWIC
     @FXML
     public void removeAllCompetitorsFromClub() {
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
-        List<Competitor> cListFromClub = clubComboBox.getSelectionModel().getSelectedItem().getCompetitors();
-        System.out.println(cListFromClub.size());
-        List<Competitor> cList = contest.getCompetitors();
-        System.out.println(cList.size());
-        // TODO USUWA PO REFERENCJI, A POWINNO USUWAC PO WARTOSCIACH, TRZEBA DOPISAC POROWNYWANIE?
-        for(Competitor c : cListFromClub) {
-            cList.remove(c);
-        }
-        System.out.println(cList.size());
-        contest.setCompetitors(cList);
+        Club club = clubComboBox.getSelectionModel().getSelectedItem();
 
+        List<Competitor> actualList = contest.getCompetitors();
+        List<Competitor> fromClubList = club.getCompetitors();
+        for(int i = 0; i < fromClubList.size(); i++) {
+            for(int j = 0; j < actualList.size(); j++) {
+                if(fromClubList.get(i).getPesel() == actualList.get(j).getPesel()) {
+                    actualList.remove(j);
+                    break;
+                }
+            }
+        }
+        contest.setCompetitors(actualList);
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
+
+        // clearing
+
+        // refresh view
     }
 
     @FXML
@@ -95,14 +100,18 @@ public class RegistrationController implements Initializable {
         HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
     }
 
-    // TODO !!! NAPRAWIC
     @FXML
     public void removeCompetitor() {
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         Competitor competitor = competitorComboBox.getSelectionModel().getSelectedItem();
 
         List<Competitor> cList = contest.getCompetitors();
-        cList.remove(competitor);
+        for(Competitor c : cList) {
+            if(c.getPesel() == competitor.getPesel()) {
+                cList.remove(competitor);
+                break;
+            }
+        }
         contest.setCompetitors(cList);
 
         HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
