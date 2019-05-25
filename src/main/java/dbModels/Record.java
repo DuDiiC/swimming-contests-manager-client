@@ -5,10 +5,12 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "RECORD")
+@SequenceGenerator(name = "generate_record_id", sequenceName = "generate_record_id", allocationSize = 1)
 public class Record implements Serializable {
 
     @Id
     @Column(name = "record_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generate_record_id")
     private Long recordId;
 
     @Column(name = "minutes", length = 2)

@@ -15,7 +15,7 @@ public class Contest implements Serializable {
     @Id
     @Column(name = "contest_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generate_contest_id")
-    private Long contest_id;
+    private Long id;
 
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
@@ -27,7 +27,7 @@ public class Contest implements Serializable {
     private String city;
 
     // wiele zawodow do ktorych przypisanych jest wiele konkurencji prez tabele "w_zawodach"
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
     @JoinTable(
             name = "COMPETITIONS_IN_CONTESTS",
             joinColumns = { @JoinColumn(name = "CONTEST_CONTEST_ID") },
@@ -36,7 +36,7 @@ public class Contest implements Serializable {
     private List<Competition> competitions = new ArrayList<>();
 
     // wiele zawodow w ktorych bierze udzial wielu zawodnikow przez tabele "bierze_udzial_w"
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
     @JoinTable(
             name = "COMPETITORS_IN_CONTESTS",
             joinColumns = { @JoinColumn(name = "CONTEST_CONTEST_ID") },
@@ -54,12 +54,12 @@ public class Contest implements Serializable {
         return name + " (" + city + ", " + stringDate + ")";
     }
 
-    public Long getContest_id() {
-        return contest_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setContest_id(Long contest_id) {
-        this.contest_id = contest_id;
+    public void setId(Long contest_id) {
+        this.id = contest_id;
     }
 
     public String getName() {
