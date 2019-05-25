@@ -7,11 +7,10 @@ import java.util.List;
 
 public class HibernateUtilTrainer {
 
-    protected static EntityManager em = HibernateUtil.getEm();
+    private static EntityManager em = HibernateUtil.getEm();
 
     public static List<Trainer> getAll() {
-        List trainerList =
-                em.createQuery("FROM Trainer").getResultList();
+        List trainerList = em.createQuery("FROM Trainer").getResultList();
         return trainerList;
     }
 
@@ -20,15 +19,14 @@ public class HibernateUtilTrainer {
         return trainer;
     }
 
-    public static Trainer getByName(Trainer trainer) {
+    private static Trainer getByName(Trainer trainer) {
         List tList = em.createQuery("FROM Trainer WHERE name LIKE :name AND surname LIKE :surname")
                 .setParameter("name", trainer.getName()).setParameter("surname", trainer.getSurname())
                 .getResultList();
         if(tList.size() != 0) {
             return (Trainer) tList.get(0);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public static boolean addTrainer(Trainer trainer) {
@@ -42,7 +40,7 @@ public class HibernateUtilTrainer {
         return true;
     }
 
-    public static void deleteTrainer(Trainer trainer) {
+    public static void removeTrainer(Trainer trainer) {
         em.getTransaction().begin();
         em.remove(em.contains(trainer) ? trainer : em.merge(trainer));
         em.getTransaction().commit();

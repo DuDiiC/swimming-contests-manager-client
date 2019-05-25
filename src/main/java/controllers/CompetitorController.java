@@ -115,6 +115,7 @@ public class CompetitorController implements Initializable {
         timeTextField.setPromptText("format: mm:ss:ss");
 
         // recordTableView
+        recordTableView.setPlaceholder(new Label("Brak rekordów do wyświetlenia"));
         competitionColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCompetition().toString()));
         timeColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
     }
@@ -199,7 +200,11 @@ public class CompetitorController implements Initializable {
             DialogsUtil.errorDialog("Musisz wypełnić wszystkie pola formularza, aby dodać rekord zawodnikowi!");
             return;
         } else if(false /* TODO: DOPISAC REGEX NA SPRAWDZANIE POPRAWNOSCI FORMATU CZASU */) {
-            DialogsUtil.errorDialog("Niepoprawny format czasu, wymagany: xx:yy:zz\n - dwie cyfry na minuty\n - dwie cyfy na sekundy\n - dwie cyfry na setne\n oddzielone dwukropkiem");
+            DialogsUtil.errorDialog("Niepoprawny format czasu, wymagany: xx:yy:zz\n " +
+                    "- dwie cyfry na minuty\n " +
+                    "- dwie cyfy na sekundy\n " +
+                    "- dwie cyfry na setne\n " +
+                    "oddzielone dwukropkiem");
             timeTextField.clear();
             return;
         }
@@ -231,7 +236,6 @@ public class CompetitorController implements Initializable {
             return;
         }
         Record record = recordTableView.getSelectionModel().getSelectedItem();
-        // TODO: DOPISAC USUWANIE
         HibernateUtilRecord.removeRecord(record);
         // cleaning
         recordTableView.getSelectionModel().clearSelection();
@@ -268,10 +272,12 @@ public class CompetitorController implements Initializable {
     }
 
     private void setPropertiesForCompetitorTableView() {
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Competitor, String>("name"));
-        surnameColumn.setCellValueFactory(new PropertyValueFactory<Competitor, String>("surname"));
-        genderColumn.setCellValueFactory(new PropertyValueFactory<Competitor, String>("gender"));
-        clubColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity()));
+        competitorTableView.setPlaceholder(new Label("Brak zawodników do wyświetlenia"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        surnameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        clubColumn.setCellValueFactory(param -> new SimpleStringProperty(
+                param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity()));
     }
 
     private void clearAfterAddition() {

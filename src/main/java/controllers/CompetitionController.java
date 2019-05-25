@@ -7,14 +7,12 @@ import dbUtils.HibernateUtilCompetition;
 import dbUtils.HibernateUtilContest;
 import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.*;
@@ -38,6 +36,8 @@ public class CompetitionController implements Initializable {
     @FXML private TableColumn<Competition, String> genderColumn;
 
     @FXML private TableColumn<Competition, String> recordColumn;
+
+    @FXML private Button deleteCompetitionButton;
 
     @FXML private ComboBox<Contest> contestComboBox;
 
@@ -63,19 +63,20 @@ public class CompetitionController implements Initializable {
         genderComboBox.setItems(genderList);
 
         // competitionTableView
-        styleColumn.setCellValueFactory(new PropertyValueFactory<Competition, String>("style"));
-        distanceColumn.setCellValueFactory(new PropertyValueFactory<Competition, Integer>("distance"));
-        genderColumn.setCellValueFactory(new PropertyValueFactory<Competition, String>("gender"));
-        recordColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Competition, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Competition, String> param) {
-                try {
-                    Record record = getBestRecord(param.getValue());
-                    return new SimpleStringProperty(record.toString() + " (" + record.getCompetitor().toString()
-                            + " - " + record.getCompetitor().getClub().toString() +")");
-                } catch (NullPointerException e) {
-                    return null;
+        competitionTableView.setPlaceholder(new Label("Nie ma konkurencji do wyświetlenia"));
+        styleColumn.setCellValueFactory(new PropertyValueFactory<>("style"));
+        distanceColumn.setCellValueFactory(new PropertyValueFactory<>("distance"));
+        genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        recordColumn.setCellValueFactory(param -> {
+            try {
+                Record record = getBestRecord(param.getValue());
+                if(record == null) {
+                    return new SimpleStringProperty("brak rekordu");
                 }
+                return new SimpleStringProperty(record.toString() + " (" + record.getCompetitor().toString()
+                        + " - " + record.getCompetitor().getClub().toString() +")");
+            } catch (NullPointerException e) {
+                return null;
             }
         });
         competitionTableView.setItems(getCompetition());
@@ -92,7 +93,8 @@ public class CompetitionController implements Initializable {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nową konkurencję!");
             return;
         } else if(Integer.valueOf(distanceTextField.getText())%25 != 0) {
-            DialogsUtil.errorDialog("Niepoprawny dystans w konkurencji - długość niecki basenu to 25 m, musisz podać wielokrotność tej liczby.");
+            DialogsUtil.errorDialog("Niepoprawny dystans w konkurencji - długość niecki basenu to 25 m," +
+                    " musisz podać wielokrotność tej liczby.");
             distanceTextField.clear();
             return;
         }
@@ -123,7 +125,7 @@ public class CompetitionController implements Initializable {
             return;
         }
         // remove data from database
-        HibernateUtilCompetition.deleteCompetition(competitionTableView.getSelectionModel().getSelectedItem());
+        HibernateUtilCompetition.removeCompetition(competitionTableView.getSelectionModel().getSelectedItem());
         // clearing
         competitionTableView.getSelectionModel().clearSelection();
         // refresh view
@@ -152,7 +154,7 @@ public class CompetitionController implements Initializable {
         cL.add(competition);
         contest.setCompetitions(cL);
 
-        HibernateUtilContest.addOrRemoveCompetition(contest, competition);
+        HibernateUtilContest.addOrRemoveCompetition(contest);
 
         // clearing
         competitionTableView.getSelectionModel().clearSelection();

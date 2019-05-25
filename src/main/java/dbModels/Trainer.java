@@ -19,7 +19,7 @@ public class Trainer implements Serializable {
     @Column(name = "surname", nullable = false, length = 50)
     private String surname;
 
-    // wielu trenerow jest przypisanych do jednego klubu
+    // many trainers one club
     @ManyToOne
     @JoinColumn(name = "CLUB_CLUB_ID", nullable = false)
     private Club club;

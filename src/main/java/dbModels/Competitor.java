@@ -22,16 +22,16 @@ public class Competitor implements Serializable {
     @Column(name = "gender", nullable = false, length = 2)
     private String gender;
 
-    // wielu zawodnikow w jednym klubie
+    // many competitors one club
     @ManyToOne
     @JoinColumn(name = "CLUB_CLUB_ID", nullable = false)
     private Club club;
 
-    // wiele rekordow dla jednego zawodnika
+    // many records one competitor
     @OneToMany(mappedBy = "competitor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Record> records = new ArrayList<>();
 
-    // wielu zawodnikow bierze udzial w wielu zawodach przez tabele "bierze_udzial_w"
+    // many competitors many contests with "competitors_in_contest" entity
     @ManyToMany(mappedBy = "competitors")
     private List<Contest> contests = new ArrayList<>();
 

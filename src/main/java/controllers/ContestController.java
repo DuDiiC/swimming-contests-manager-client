@@ -50,13 +50,13 @@ public class ContestController implements Initializable {
 
     @FXML private TableColumn<Competitor, String> competitorColumn;
 
-    @FXML private TableView<Competition> competitionTableView;
-
-    @FXML private TableColumn<Competition, String> competitionColumn;
-
     @FXML private Button deleteCompetitorFromContestButton;
 
     @FXML private Button deleteAllCompetitorsFromContestButton;
+
+    @FXML private TableView<Competition> competitionTableView;
+
+    @FXML private TableColumn<Competition, String> competitionColumn;
 
     @FXML private Button deleteCompetitionFromContestButton;
 
@@ -69,8 +69,8 @@ public class ContestController implements Initializable {
         contestList.setAll(HibernateUtilContest.getAll());
 
         // contestTableView
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Contest, String>("name"));
-        cityColumn.setCellValueFactory(new PropertyValueFactory<Contest, String>("city"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
         dateColumn.setCellValueFactory(param -> {
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
             String stringDate = sdf.format(param.getValue().getDate());
@@ -83,7 +83,7 @@ public class ContestController implements Initializable {
         contestTableView.setEditable(true);
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit(event -> {
-            Contest contest = (Contest) event.getTableView().getItems().get(
+            Contest contest = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
             contest.setName(event.getNewValue());
@@ -91,7 +91,7 @@ public class ContestController implements Initializable {
         });
         cityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         cityColumn.setOnEditCommit(event -> {
-            Contest contest = (Contest) event.getTableView().getItems().get(
+            Contest contest = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
             contest.setCity(event.getNewValue());
@@ -99,7 +99,8 @@ public class ContestController implements Initializable {
         });
 
         // competitorTableView
-        competitorColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString() + " (" + param.getValue().getClub().toString() + ")"));
+        competitorColumn.setCellValueFactory(param -> new SimpleStringProperty(
+                param.getValue().toString() + " (" + param.getValue().getClub().toString() + ")"));
         competitorTableView.setPlaceholder(new Label("Nie ma zawodnikow do wyswietlenia"));
 
         // competitionTableView
@@ -221,7 +222,7 @@ public class ContestController implements Initializable {
         cList.remove(competition);
         contest.setCompetitions(cList);
 
-        HibernateUtilContest.addOrRemoveCompetition(contest, competition);
+        HibernateUtilContest.addOrRemoveCompetition(contest);
 
         selectedInfo();
     }

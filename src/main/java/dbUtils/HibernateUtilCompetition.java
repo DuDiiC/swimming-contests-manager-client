@@ -8,21 +8,15 @@ import java.util.List;
 
 public class HibernateUtilCompetition {
 
-    protected static EntityManager em = HibernateUtil.getEm();
+    private static EntityManager em = HibernateUtil.getEm();
 
     public static List<Competition> getAll() {
-        //EntityManager em = HibernateUtil.createEM();
-        //em.getTransaction().begin();
         List competitionList = em.createQuery("FROM Competition").getResultList();
-        //em.close();
         return competitionList;
     }
 
     public static Competition getById(Long id) {
-        //EntityManager em = HibernateUtil.createEM();
-        //em.getTransaction().begin();
         Competition competition = em.find(Competition.class, id);
-        //em.close();
         return competition;
     }
 
@@ -33,12 +27,9 @@ public class HibernateUtilCompetition {
     }
 
     public static List<Record> getAllRecords(Competition competition) {
-        //EntityManager em = HibernateUtil.createEM();
-        //em.getTransaction().begin();
         List recordList =
                 em.createQuery("SELECT r FROM Competition c JOIN Record r on c.competitionId=r.competition.competitionId where c.competitionId=:id")
                 .setParameter("id", competition.getCompetitionId()).getResultList();
-        //em.close();
         return recordList;
     }
 
@@ -48,7 +39,7 @@ public class HibernateUtilCompetition {
         em.getTransaction().commit();
     }
 
-    public static void deleteCompetition(Competition competition) {
+    public static void removeCompetition(Competition competition) {
         em.getTransaction().begin();
         em.remove(em.contains(competition) ? competition : em.merge(competition));
         em.getTransaction().commit();

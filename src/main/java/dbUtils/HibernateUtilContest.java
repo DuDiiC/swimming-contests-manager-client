@@ -9,7 +9,7 @@ import java.util.List;
 
 public class HibernateUtilContest {
 
-    protected static EntityManager em = HibernateUtil.getEm();
+    private static EntityManager em = HibernateUtil.getEm();
 
     public static List<Contest> getAll() {
         List contestList = em.createQuery("FROM Contest").getResultList();
@@ -26,9 +26,8 @@ public class HibernateUtilContest {
                 .setParameter("name", contest.getName()).getResultList();
         if(cList.size() != 0) {
             return (Contest) cList.get(0);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public static List<Competitor> getAllCompetitors(Contest contest) {
@@ -52,13 +51,6 @@ public class HibernateUtilContest {
      */
     public static boolean addContest(Contest contest) {
         em.getTransaction().begin();
-//        List<Contest> cList = getAll();
-//        for(Contest c : cList) {
-//            if(c.getName().equals(contest.getName())) {
-//                em.getTransaction().commit();
-//                return false;
-//            }
-//        }
         if(getByName(contest) != null) {
             em.getTransaction().commit();
             return false;
@@ -77,7 +69,6 @@ public class HibernateUtilContest {
     public static void addOrRemoveCompetitor(Contest contest, Competitor competitor) {
         em.getTransaction().begin();
         em.merge(contest);
-//        em.merge(competitor);
         em.getTransaction().commit();
     }
 
@@ -87,10 +78,9 @@ public class HibernateUtilContest {
         em.getTransaction().commit();
     }
 
-    public static void addOrRemoveCompetition(Contest contest, Competition competition) {
+    public static void addOrRemoveCompetition(Contest contest) {
         em.getTransaction().begin();
         em.merge(contest);
-//        em.merge(competition);
         em.getTransaction().commit();
     }
 

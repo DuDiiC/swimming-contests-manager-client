@@ -22,12 +22,12 @@ public class Record implements Serializable {
     @Column(name = "hundredth", nullable = false, length = 2)
     private Integer hundredth;
 
-    // wiele rekordow dla jednego zawodnika
+    // many records one competitor
     @ManyToOne
     @JoinColumn(name = "COMPETITOR_PESEL")
     private Competitor competitor;
 
-    // wiele rekordow dla jednej konkurencji
+    // many records one competition
     @ManyToOne
     @JoinColumn(name = "COMPETITION_COMPETITION_ID", nullable = false)
     private Competition competition;

@@ -26,7 +26,7 @@ public class Contest implements Serializable {
     @Column(name = "city", length = 50)
     private String city;
 
-    // wiele zawodow do ktorych przypisanych jest wiele konkurencji prez tabele "w_zawodach"
+    // many contests many competitons with "competitions_in_contests" entity
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
     @JoinTable(
             name = "COMPETITIONS_IN_CONTESTS",
@@ -35,7 +35,7 @@ public class Contest implements Serializable {
     )
     private List<Competition> competitions = new ArrayList<>();
 
-    // wiele zawodow w ktorych bierze udzial wielu zawodnikow przez tabele "bierze_udzial_w"
+    // many contests many competitors with "competitors_in_contests" entity
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
     @JoinTable(
             name = "COMPETITORS_IN_CONTESTS",

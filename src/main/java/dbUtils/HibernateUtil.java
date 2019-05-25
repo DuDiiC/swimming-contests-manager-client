@@ -10,7 +10,7 @@ public class HibernateUtil {
 
     private static final String HIBERNATE_CFG_XML = "META-INF/hibernate.cfg.xml";
 
-    public static EntityManager em = createEM();
+    private static EntityManager em = createEM();
 
     public static EntityManager createEM() {
         Configuration configuration = new Configuration().configure(HIBERNATE_CFG_XML);

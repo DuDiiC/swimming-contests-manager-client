@@ -21,11 +21,11 @@ public class Club implements Serializable {
     @Column(name = "city", nullable = false, length = 50)
     private String city;
 
-    // jeden klub ma wielu trenerow
+    // one club many trainers
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Trainer> trainers = new ArrayList<>();
 
-    // jeden klub ma wielu zawodnikow
+    // one club many competitors
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Competitor> competitors = new ArrayList<>();
 

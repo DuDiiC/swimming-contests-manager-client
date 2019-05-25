@@ -61,7 +61,7 @@ public class TrainerController implements Initializable {
         trainerTableView.setEditable(true);
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit(event -> {
-            Trainer trainer = (Trainer) event.getTableView().getItems().get(
+            Trainer trainer = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
             trainer.setName(event.getNewValue());
@@ -69,7 +69,7 @@ public class TrainerController implements Initializable {
         });
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surnameColumn.setOnEditCommit(event -> {
-            Trainer trainer = (Trainer) event.getTableView().getItems().get(
+            Trainer trainer = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
             trainer.setSurname(event.getNewValue());
@@ -114,7 +114,7 @@ public class TrainerController implements Initializable {
             return;
         }
         Trainer trainer = trainerComboBox.getSelectionModel().getSelectedItem();
-        HibernateUtilTrainer.deleteTrainer(trainer);
+        HibernateUtilTrainer.removeTrainer(trainer);
         // clearing todo: this code throws an exception
         trainerComboBox.setItems(null);
         clubComboBox2.getSelectionModel().clearSelection();
@@ -141,9 +141,10 @@ public class TrainerController implements Initializable {
     }
 
     private void setPropertiesForTrainerTableView() {
-        licenceNrColumn.setCellValueFactory(new PropertyValueFactory<Trainer, Integer>("licenceNr"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Trainer, String>("name"));
-        surnameColumn.setCellValueFactory(new PropertyValueFactory<Trainer, String>("surname"));
-        clubColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity()));
+        licenceNrColumn.setCellValueFactory(new PropertyValueFactory<>("licenceNr"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        surnameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        clubColumn.setCellValueFactory(param -> new SimpleStringProperty(
+                param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity()));
     }
 }

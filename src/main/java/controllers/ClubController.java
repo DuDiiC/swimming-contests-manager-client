@@ -26,13 +26,13 @@ public class ClubController implements Initializable {
 
     @FXML private Button addClubButton;
 
-    @FXML private Button deleteClubButton;
-
     @FXML private TableView<Club> clubTableView;
 
     @FXML private TableColumn<Club, String> nameColumn;
 
     @FXML private TableColumn<Club, String> cityColumn;
+
+    @FXML private Button deleteClubButton;
 
     @FXML private TableView<Trainer> trainerTableView;
 
@@ -51,15 +51,16 @@ public class ClubController implements Initializable {
 
         // clubTableView
         clubTableView.setItems(getClub());
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Club, String>("name"));
-        cityColumn.setCellValueFactory(new PropertyValueFactory<Club, String>("city"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));
         clubTableView.setItems(clubList);
+        clubTableView.setPlaceholder(new Label("Nie ma klubów do wyświetlenia"));
 
         // setEditable clubTableView
         clubTableView.setEditable(true);
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         nameColumn.setOnEditCommit(event -> {
-            Club club = (Club) event.getTableView().getItems().get(
+            Club club = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
             club.setName(event.getNewValue());
@@ -67,7 +68,7 @@ public class ClubController implements Initializable {
         });
         cityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         cityColumn.setOnEditCommit(event -> {
-            Club club = (Club) event.getTableView().getItems().get(
+            Club club = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
             club.setCity(event.getNewValue());
@@ -75,10 +76,14 @@ public class ClubController implements Initializable {
         });
 
         // trainerTableView
-        trainerColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName() + " " + param.getValue().getSurname()));
+        trainerTableView.setPlaceholder(new Label("Nie ma trenerów do wyświetlenia"));
+        trainerColumn.setCellValueFactory(param -> new SimpleStringProperty(
+                param.getValue().getName() + " " + param.getValue().getSurname()));
 
         // competitorTableView
-        competitorColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName() + " " + param.getValue().getSurname()));
+        competitorTableView.setPlaceholder(new Label("Nie ma zawodników do wyświetlenia"));
+        competitorColumn.setCellValueFactory(param -> new SimpleStringProperty(
+                param.getValue().getName() + " " + param.getValue().getSurname()));
     }
 
     @FXML

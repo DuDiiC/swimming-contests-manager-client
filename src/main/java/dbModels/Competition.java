@@ -24,11 +24,11 @@ public class Competition implements Serializable {
     @Column(name = "gender", nullable = false, length = 2)
     private String gender;
 
-    // jedna konkurencja z wieloma rekordami
+    // one competition many records
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Record> records = new ArrayList<>();
 
-    // wiele konkrencji przypisanych do wielu zawodow przez tabele "w_zawodach"
+    // many competitions many contests with "competitions_in_contests" entity
     @ManyToMany(mappedBy = "competitions")
     private List<Contest> contests = new ArrayList<>();
 
