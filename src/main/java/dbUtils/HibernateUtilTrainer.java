@@ -20,15 +20,40 @@ public class HibernateUtilTrainer {
         return trainer;
     }
 
-    public static void addTrainer(Trainer trainer) {
+    public static Trainer getByName(Trainer trainer) {
+        List tList = em.createQuery("FROM Trainer WHERE name LIKE :name AND surname LIKE :surname")
+                .setParameter("name", trainer.getName()).setParameter("surname", trainer.getSurname())
+                .getResultList();
+        if(tList.size() != 0) {
+            return (Trainer) tList.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean addTrainer(Trainer trainer) {
         em.getTransaction().begin();
+        if(getByName(trainer) != null) {
+            em.getTransaction().commit();
+            return false;
+        }
         em.persist(trainer);
         em.getTransaction().commit();
+        return true;
     }
 
     public static void deleteTrainer(Trainer trainer) {
         em.getTransaction().begin();
         em.remove(em.contains(trainer) ? trainer : em.merge(trainer));
+        em.getTransaction().commit();
+    }
+
+    public static void updateTrainer(Trainer trainer) {
+        em.getTransaction().begin();
+        Trainer tmp = em.find(Trainer.class, trainer.getLicenceNr());
+        tmp.setName(trainer.getName());
+        tmp.setSurname(trainer.getSurname());
+        em.merge(tmp);
         em.getTransaction().commit();
     }
 }

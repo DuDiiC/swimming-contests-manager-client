@@ -4,15 +4,15 @@ import dbModels.Competition;
 import dbModels.Competitor;
 import dbModels.Contest;
 import dbUtils.HibernateUtilContest;
+import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -22,6 +22,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * TODO:
+ * > dodac modyfikacje elementow w tabeli do: nazwy, miasta, daty
+ */
 public class ContestController implements Initializable {
 
     @FXML private TextField nameTextField;
@@ -31,8 +35,6 @@ public class ContestController implements Initializable {
     @FXML private DatePicker dateField;
 
     @FXML private Button addContestButton;
-
-    @FXML private ComboBox<Contest> contestComboBox;
 
     @FXML private Button deleteContestButton;
 
@@ -66,47 +68,63 @@ public class ContestController implements Initializable {
         ObservableList<Contest> contestList = FXCollections.observableArrayList();
         contestList.setAll(HibernateUtilContest.getAll());
 
-        // contestComboBox
-        contestComboBox.setItems(contestList);
-
         // contestTableView
         nameColumn.setCellValueFactory(new PropertyValueFactory<Contest, String>("name"));
         cityColumn.setCellValueFactory(new PropertyValueFactory<Contest, String>("city"));
-        dateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Contest, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Contest, String> param) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
-                String stringDate = sdf.format(param.getValue().getDate());
-                return new SimpleStringProperty(stringDate);
-            }
+        dateColumn.setCellValueFactory(param -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
+            String stringDate = sdf.format(param.getValue().getDate());
+            return new SimpleStringProperty(stringDate);
         });
+        contestTableView.setPlaceholder(new Label("Nie ma zawodow do wyswietlenia"));
         contestTableView.setItems(contestList);
 
-        // competitorTableView
-        competitorColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Competitor, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Competitor, String> param) {
-                return new SimpleStringProperty(param.getValue().toString() + " (" + param.getValue().getClub().toString() + ")");
-            }
+        // setEditable contestTableView
+        contestTableView.setEditable(true);
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(event -> {
+            Contest contest = (Contest) event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()
+            );
+            contest.setName(event.getNewValue());
+            HibernateUtilContest.updateContest(contest);
+        });
+        cityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        cityColumn.setOnEditCommit(event -> {
+            Contest contest = (Contest) event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()
+            );
+            contest.setCity(event.getNewValue());
+            HibernateUtilContest.updateContest(contest);
         });
 
+        // competitorTableView
+        competitorColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString() + " (" + param.getValue().getClub().toString() + ")"));
+        competitorTableView.setPlaceholder(new Label("Nie ma zawodnikow do wyswietlenia"));
+
         // competitionTableView
-        competitionColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Competition, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Competition, String> param) {
-                return new SimpleStringProperty(param.getValue().toString());
-            }
-        });
+        competitionColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
+        competitionTableView.setPlaceholder(new Label("Nie ma konkurencji do wyswietlenia"));
     }
 
     @FXML
     private void addContest() {
+        if(nameTextField.getText().isEmpty() || cityTextField.getText().isEmpty() || dateField.getEditor().getText().isEmpty()) {
+            DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowe zawody!");
+            return;
+        }
         // add data to database
         Contest contest = new Contest();
         contest.setName(nameTextField.getText());
         contest.setCity(cityTextField.getText());
         contest.setDate(Date.from(dateField.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-        HibernateUtilContest.addContest(contest);
+        if(!HibernateUtilContest.addContest(contest)) {
+            DialogsUtil.errorDialog("Takie zawody juz istnieja!");
+            nameTextField.clear();
+            cityTextField.clear();
+            dateField.getEditor().clear();
+            return;
+        }
         // cleaning
         nameTextField.clear();
         cityTextField.clear();
@@ -115,22 +133,25 @@ public class ContestController implements Initializable {
         ObservableList<Contest> contestList = FXCollections.observableArrayList();
         List cList = HibernateUtilContest.getAll();
         contestList.setAll(cList);
-        contestComboBox.setItems(contestList);
         contestTableView.setItems(contestList);
     }
 
     @FXML
     private void removeContest() {
         // remove data from database
-        Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
-        HibernateUtilContest.deleteContest(contest);
+        if(contestTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody do usunięcia!");
+            return;
+        }
+        Contest contest = contestTableView.getSelectionModel().getSelectedItem();
+        HibernateUtilContest.removeContest(contest);
         // cleaning
-        contestComboBox.getSelectionModel().clearSelection();
+        competitorTableView.setItems(null);
+        competitionTableView.setItems(null);
         // refresh view
         ObservableList<Contest> contestList = FXCollections.observableArrayList();
         List cList = HibernateUtilContest.getAll();
         contestList.setAll(cList);
-        contestComboBox.setItems(contestList);
         contestTableView.setItems(contestList);
     }
 
@@ -149,6 +170,13 @@ public class ContestController implements Initializable {
 
     @FXML
     public void removeCompetitorFromContest() {
+        if(contestTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć zawodnika!");
+            return;
+        } else if(competitorTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawodnika do usunięcia!");
+            return;
+        }
         Contest contest = contestTableView.getSelectionModel().getSelectedItem();
         Competitor competitor = competitorTableView.getSelectionModel().getSelectedItem();
 
@@ -163,6 +191,10 @@ public class ContestController implements Initializable {
 
     @FXML
     private void removeAllCompetitorsFromContest() {
+        if(contestTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć zawodników!");
+            return;
+        }
         Contest contest = contestTableView.getSelectionModel().getSelectedItem();
 
         List<Competitor> cList = new ArrayList<>();
@@ -175,6 +207,13 @@ public class ContestController implements Initializable {
 
     @FXML
     private void removeCompetitionFromContest() {
+        if(contestTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć konkurencję!");
+            return;
+        } else if(competitionTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz konkurencję, którą chcesz usunąć z zawodów!");
+            return;
+        }
         Contest contest = contestTableView.getSelectionModel().getSelectedItem();
         Competition competition = competitionTableView.getSelectionModel().getSelectedItem();
 
@@ -189,6 +228,10 @@ public class ContestController implements Initializable {
 
     @FXML
     private void removeAllCompetitionsFromContest() {
+        if(contestTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć konkurencje!");
+            return;
+        }
         Contest contest = contestTableView.getSelectionModel().getSelectedItem();
 
         List<Competition> cList = new ArrayList<>();

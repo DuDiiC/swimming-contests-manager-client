@@ -1,11 +1,17 @@
 package controllers;
 
+import dbModels.Competitor;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-public class RecordController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class RecordController implements Initializable {
 
     @FXML
     private ComboBox competitorComboBox;
@@ -18,6 +24,12 @@ public class RecordController {
 
     @FXML
     private Button addRecordButton;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+    }
 
     @FXML
     public void addRecord() {

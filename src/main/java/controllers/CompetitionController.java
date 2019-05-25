@@ -5,6 +5,7 @@ import dbModels.Contest;
 import dbModels.Record;
 import dbUtils.HibernateUtilCompetition;
 import dbUtils.HibernateUtilContest;
+import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -69,7 +70,7 @@ public class CompetitionController implements Initializable {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Competition, String> param) {
                 try {
-                    Record record = HibernateUtilCompetition.getBestRecord(param.getValue());
+                    Record record = getBestRecord(param.getValue());
                     return new SimpleStringProperty(record.toString() + " (" + record.getCompetitor().toString()
                             + " - " + record.getCompetitor().getClub().toString() +")");
                 } catch (NullPointerException e) {
@@ -87,35 +88,20 @@ public class CompetitionController implements Initializable {
 
     @FXML
     public void addCompetition() {
-        if(Integer.valueOf(distanceTextField.getText())%25 != 0) {
-            // todo: add alert
-            System.out.println("Niepoprawny dystans w konkurencji - dlugosc niecki basenu to 25 m.");
+        if(styleComboBox.getSelectionModel().isEmpty() || distanceTextField.getText().isEmpty() || genderComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nową konkurencję!");
+            return;
+        } else if(Integer.valueOf(distanceTextField.getText())%25 != 0) {
+            DialogsUtil.errorDialog("Niepoprawny dystans w konkurencji - długość niecki basenu to 25 m, musisz podać wielokrotność tej liczby.");
             distanceTextField.clear();
-        } else {
-            // add data to database
-            Competition competition = new Competition();
-            competition.setStyle(styleComboBox.getSelectionModel().getSelectedItem());
-            competition.setDistance(Integer.valueOf(distanceTextField.getText()));
-            competition.setGender(genderComboBox.getSelectionModel().getSelectedItem());
-            HibernateUtilCompetition.addCompetition(competition);
-            // clearing
-            styleComboBox.getSelectionModel().clearSelection();
-            distanceTextField.clear();
-            genderComboBox.getSelectionModel().clearSelection();
-            // refresh view
-            competitionTableView.setItems(getCompetition());
+            return;
         }
-    }
-
-    @FXML
-    public void removeCompetition() {
-        // remove data from database
-        Competition competition = HibernateUtilCompetition.getByStyleAndDistanceAndGender(
-                styleComboBox.getSelectionModel().getSelectedItem(),
-                Integer.valueOf(distanceTextField.getText()),
-                genderComboBox.getSelectionModel().getSelectedItem()
-        );
-        HibernateUtilCompetition.deleteCompetition(competition);
+        // add data to database
+        Competition competition = new Competition();
+        competition.setStyle(styleComboBox.getSelectionModel().getSelectedItem());
+        competition.setDistance(Integer.valueOf(distanceTextField.getText()));
+        competition.setGender(genderComboBox.getSelectionModel().getSelectedItem());
+        HibernateUtilCompetition.addCompetition(competition);
         // clearing
         styleComboBox.getSelectionModel().clearSelection();
         distanceTextField.clear();
@@ -125,20 +111,74 @@ public class CompetitionController implements Initializable {
     }
 
     @FXML
+    public void removeCompetition() {
+        if(competitionTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz konkurencję do usunięcia!");
+            return;
+        } else if(competitionTableView.getSelectionModel().getSelectedItem().getRecords().size() != 0) {
+            DialogsUtil.errorDialog("Nie można usunąć konkurencji z przypisanymi rekordami!");
+            return;
+        } else if(competitionTableView.getSelectionModel().getSelectedItem().getContests().size() != 0) {
+            DialogsUtil.errorDialog("Nie można usunąć konkurencji przypisanej do zawodów!");
+            return;
+        }
+        // remove data from database
+        HibernateUtilCompetition.deleteCompetition(competitionTableView.getSelectionModel().getSelectedItem());
+        // clearing
+        competitionTableView.getSelectionModel().clearSelection();
+        // refresh view
+        competitionTableView.setItems(getCompetition());
+    }
+
+    @FXML
     public void addCompetitionToContest() {
+        // add data to database
+        if(competitionTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz konkurecję do dopisania do zawodów!");
+            return;
+        } else if(contestComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody, do których chces zapisać konkurecję!");
+            return;
+        }
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         Competition competition = competitionTableView.getSelectionModel().getSelectedItem();
-
+        for(Competition c : contest.getCompetitions()) {
+            if(c.getCompetitionId() == competition.getCompetitionId()) {
+                DialogsUtil.errorDialog("Ta konkurencja jest już przypisana do wybranych zawodów!");
+                return;
+            }
+        }
         List<Competition> cL = contest.getCompetitions();
         cL.add(competition);
         contest.setCompetitions(cL);
 
         HibernateUtilContest.addOrRemoveCompetition(contest, competition);
+
+        // clearing
+        competitionTableView.getSelectionModel().clearSelection();
+        contestComboBox.getSelectionModel().clearSelection();
     }
 
     private ObservableList<Competition> getCompetition() {
         ObservableList<Competition> competitionList = FXCollections.observableArrayList();
         competitionList.addAll(HibernateUtilCompetition.getAll());
         return competitionList;
+    }
+
+    private static Record getBestRecord(Competition competition) {
+        List<Record> recordList = HibernateUtilCompetition.getAllRecords(competition);
+        if(recordList.size() == 0) {
+            return null;
+        }
+        Record record = recordList.get(0);
+        for(Record r : recordList) {
+            if(record.getMinutes()*60 + record.getSeconds() > r.getMinutes()*60 + r.getSeconds()) {
+                record = r;
+            } else if((record.getMinutes()*60 + record.getSeconds() == r.getMinutes()*60 + r.getSeconds())
+                    && record.getHundredth() > r.getHundredth()) {
+                record = r;
+            }
+        }
+        return record;
     }
 }

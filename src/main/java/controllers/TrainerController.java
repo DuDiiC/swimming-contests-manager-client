@@ -4,15 +4,15 @@ import dbModels.Club;
 import dbModels.Trainer;
 import dbUtils.HibernateUtilClub;
 import dbUtils.HibernateUtilTrainer;
+import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
 import java.util.List;
@@ -56,16 +56,45 @@ public class TrainerController implements Initializable {
         // trainerTableView
         setPropertiesForTrainerTableView();
         trainerTableView.setItems(getTrainer());
+
+        // setEditable trainerTableView
+        trainerTableView.setEditable(true);
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(event -> {
+            Trainer trainer = (Trainer) event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()
+            );
+            trainer.setName(event.getNewValue());
+            HibernateUtilTrainer.updateTrainer(trainer);
+        });
+        surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        surnameColumn.setOnEditCommit(event -> {
+            Trainer trainer = (Trainer) event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()
+            );
+            trainer.setSurname(event.getNewValue());
+            HibernateUtilTrainer.updateTrainer(trainer);
+        });
     }
 
     @FXML
     public void addTrainer() {
         // add data to database
+        if(nameTextField.getText().isEmpty() || surnameTextField.getText().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowego trenera!");
+            return;
+        }
         Trainer trainer = new Trainer();
         trainer.setName(nameTextField.getText());
         trainer.setSurname(surnameTextField.getText());
         trainer.setClub(clubComboBox.getSelectionModel().getSelectedItem());
-        HibernateUtilTrainer.addTrainer(trainer);
+        if(!HibernateUtilTrainer.addTrainer(trainer)) {
+            DialogsUtil.errorDialog("Taki trener znajduje się już w bazie!");
+            nameTextField.clear();
+            surnameTextField.clear();
+            clubComboBox.getSelectionModel().clearSelection();
+            return;
+        }
         // clearing
         nameTextField.clear();
         surnameTextField.clear();
@@ -80,11 +109,15 @@ public class TrainerController implements Initializable {
     @FXML
     public void removeTrainer() {
         // remove data from database
+        if(clubComboBox2.getSelectionModel().isEmpty() || trainerComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz do usunięcia trenera z określonego klubu!");
+            return;
+        }
         Trainer trainer = trainerComboBox.getSelectionModel().getSelectedItem();
         HibernateUtilTrainer.deleteTrainer(trainer);
         // clearing todo: this code throws an exception
-        clubComboBox2.getSelectionModel().clearSelection();
         trainerComboBox.setItems(null);
+        clubComboBox2.getSelectionModel().clearSelection();
         // refresh view
         ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
         List tList = HibernateUtilTrainer.getAll();
@@ -111,11 +144,6 @@ public class TrainerController implements Initializable {
         licenceNrColumn.setCellValueFactory(new PropertyValueFactory<Trainer, Integer>("licenceNr"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Trainer, String>("name"));
         surnameColumn.setCellValueFactory(new PropertyValueFactory<Trainer, String>("surname"));
-        clubColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Trainer, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Trainer, String> param) {
-                return new SimpleStringProperty(param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity());
-            }
-        });
+        clubColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity()));
     }
 }

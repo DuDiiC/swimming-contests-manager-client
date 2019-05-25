@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClubController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClubController">
    <children>
       <VBox alignment="CENTER" prefHeight="103.0" prefWidth="800.0" spacing="10.0">
          <children>
@@ -25,8 +24,6 @@
                   <Label text="Miasto" />
                   <TextField fx:id="cityTextField" />
                   <Button fx:id="addClubButton" mnemonicParsing="false" onAction="#addClub" text="Dodaj" />
-                  <ComboBox fx:id="clubComboBox" prefWidth="150.0" />
-                  <Button fx:id="deleteClubButton" mnemonicParsing="false" onAction="#removeClub" text="Usuń" />
                </children>
             </HBox>
          </children>
@@ -37,6 +34,7 @@
           <TableColumn fx:id="cityColumn" minWidth="0.0" prefWidth="400.0" text="Miasto" />
         </columns>
       </TableView>
+      <Button fx:id="deleteClubButton" mnemonicParsing="false" onAction="#removeClub" text="Usuń zaznaczony" />
       <HBox prefHeight="236.0" prefWidth="800.0">
          <children>
             <TableView fx:id="trainerTableView" prefHeight="100.0" prefWidth="400.0">

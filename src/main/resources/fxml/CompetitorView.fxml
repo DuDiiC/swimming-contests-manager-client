@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CompetitorController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CompetitorController">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
@@ -45,15 +45,16 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <Label text="Usuń zawodnika">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="20.0">
                <children>
+                  <Label text="Usuń zawodnika">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
                   <Label text="Klub" />
                   <ComboBox fx:id="clubComboBox2" onAction="#setCompetitors" prefWidth="150.0" />
+                  <Button fx:id="deleteAllCompetitorsFromClubButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Usuń wszystkich" />
                   <Label text="Zawodnik" />
                   <ComboBox fx:id="competitorComboBox" prefWidth="150.0" />
                   <Button fx:id="deleteCompetitorButton" mnemonicParsing="false" onAction="#removeCompetitor" text="Usuń" />
@@ -66,13 +67,32 @@
           <TableColumn fx:id="nameColumn" prefWidth="230.0" text="Imię" />
           <TableColumn fx:id="surnameColumn" minWidth="0.0" prefWidth="213.0" text="Nazwisko" />
             <TableColumn fx:id="genderColumn" prefWidth="68.0" text="Płeć" />
-            <TableColumn fx:id="clubColumn" prefWidth="288.0" text="Klub" />
+            <TableColumn fx:id="clubColumn" prefWidth="385.0" text="Klub" />
         </columns>
       </TableView>
+      <VBox alignment="CENTER" prefHeight="80.0" prefWidth="100.0" spacing="10.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="800.0" spacing="15.0">
+               <children>
+                  <Label text="Dodaj wynik: ">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label text="Konkurencja" />
+                  <ComboBox fx:id="competitionComboBox" prefWidth="150.0" />
+                  <Label text="Czas" />
+                  <TextField fx:id="timeTextField" prefHeight="25.0" prefWidth="114.0" />
+                  <Button fx:id="addRecordButton" mnemonicParsing="false" onAction="#addRecord" text="Dodaj" />
+                  <Button fx:id="deleteRecordButton" mnemonicParsing="false" onAction="#removeRecord" text="Usuń zaznaczony" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
       <TableView fx:id="recordTableView" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="competitionColumn" prefWidth="405.0" text="Konkurencja" />
-          <TableColumn fx:id="timeColumn" prefWidth="394.0" text="Czas" />
+          <TableColumn fx:id="competitionColumn" prefWidth="452.99998474121094" text="Konkurencja" />
+          <TableColumn fx:id="timeColumn" prefWidth="441.0" text="Czas" />
         </columns>
       </TableView>
    </children>

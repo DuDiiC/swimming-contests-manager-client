@@ -5,6 +5,7 @@ import dbModels.Competitor;
 import dbModels.Contest;
 import dbUtils.HibernateUtilClub;
 import dbUtils.HibernateUtilContest;
+import fxUtils.DialogsUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -56,10 +58,27 @@ public class RegistrationController implements Initializable {
 
     @FXML
     public void addAllCompetitorsFromClub() {
+        if(contestComboBox.getSelectionModel().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody i klub do zapisania zawodników!");
+            return;
+        }
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         List<Competitor> cListFromClub = clubComboBox.getSelectionModel().getSelectedItem().getCompetitors();
         List<Competitor> cList = contest.getCompetitors();
-        cList.addAll(cListFromClub);
+        List<Competitor> cListToAdd = new ArrayList<>();
+        for(Competitor cFromClub : cListFromClub) {
+            boolean isInContest = false;
+            for(Competitor cFromContest : cList) {
+                if(cFromContest.getPesel() == cFromClub.getPesel()) {
+                    isInContest = true;
+                    break;
+                }
+            }
+            if(!isInContest) {
+                cListToAdd.add(cFromClub);
+            }
+        }
+        cList.addAll(cListToAdd);
         contest.setCompetitors(cList);
 
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
@@ -67,6 +86,10 @@ public class RegistrationController implements Initializable {
 
     @FXML
     public void removeAllCompetitorsFromClub() {
+        if(contestComboBox.getSelectionModel().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody i klub do wypisania zawodników!");
+            return;
+        }
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         Club club = clubComboBox.getSelectionModel().getSelectedItem();
 
@@ -90,6 +113,10 @@ public class RegistrationController implements Initializable {
 
     @FXML
     public void addCompetitor() {
+        if(contestComboBox.getSelectionModel().isEmpty() || competitorComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawodnika do zapisania na zawody!");
+            return;
+        }
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         Competitor competitor = competitorComboBox.getSelectionModel().getSelectedItem();
 
@@ -102,6 +129,10 @@ public class RegistrationController implements Initializable {
 
     @FXML
     public void removeCompetitor() {
+        if(contestComboBox.getSelectionModel().isEmpty() || competitorComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawodnika do wypisania z zawodów!");
+            return;
+        }
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         Competitor competitor = competitorComboBox.getSelectionModel().getSelectedItem();
 

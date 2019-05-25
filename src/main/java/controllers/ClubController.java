@@ -4,15 +4,15 @@ import dbModels.Club;
 import dbModels.Competitor;
 import dbModels.Trainer;
 import dbUtils.HibernateUtilClub;
+import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
 import java.util.List;
@@ -25,8 +25,6 @@ public class ClubController implements Initializable {
     @FXML private TextField cityTextField;
 
     @FXML private Button addClubButton;
-
-    @FXML private ComboBox<Club> clubComboBox;
 
     @FXML private Button deleteClubButton;
 
@@ -49,40 +47,56 @@ public class ClubController implements Initializable {
 
         ObservableList<Club> clubList = getClub();
         List cList = HibernateUtilClub.getAll();
-        // clubs comboBox
         clubList.setAll(cList);
-        clubComboBox.setItems(clubList);
 
-        // clubs tableView
+        // clubTableView
         clubTableView.setItems(getClub());
         nameColumn.setCellValueFactory(new PropertyValueFactory<Club, String>("name"));
         cityColumn.setCellValueFactory(new PropertyValueFactory<Club, String>("city"));
         clubTableView.setItems(clubList);
 
-        // trainerTableView
-        trainerColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Trainer, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Trainer, String> param) {
-                return new SimpleStringProperty(param.getValue().getName() + " " + param.getValue().getSurname());
-            }
+        // setEditable clubTableView
+        clubTableView.setEditable(true);
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameColumn.setOnEditCommit(event -> {
+            Club club = (Club) event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()
+            );
+            club.setName(event.getNewValue());
+            HibernateUtilClub.updateClub(club);
+        });
+        cityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        cityColumn.setOnEditCommit(event -> {
+            Club club = (Club) event.getTableView().getItems().get(
+                    event.getTablePosition().getRow()
+            );
+            club.setCity(event.getNewValue());
+            HibernateUtilClub.updateClub(club);
         });
 
+        // trainerTableView
+        trainerColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName() + " " + param.getValue().getSurname()));
+
         // competitorTableView
-        competitorColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Competitor, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Competitor, String> param) {
-                return new SimpleStringProperty(param.getValue().getName() + " " + param.getValue().getSurname());
-            }
-        });
+        competitorColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName() + " " + param.getValue().getSurname()));
     }
 
     @FXML
     public void addClub() {
         // add data to database
+        if(nameTextField.getText().isEmpty() || cityTextField.getText().isEmpty()) {
+            DialogsUtil.errorDialog("Wypełniej wszystkie pola formularza, aby dodać nowy klub!");
+            return;
+        }
         Club club = new Club();
         club.setName(nameTextField.getText());
         club.setCity(cityTextField.getText());
-        HibernateUtilClub.addClub(club);
+        if(!HibernateUtilClub.addClub(club)) {
+            DialogsUtil.errorDialog("Taki klub już istnieje w bazie!");
+            nameTextField.clear();
+            cityTextField.clear();
+            return;
+        }
         // clearing
         nameTextField.clear();
         cityTextField.clear();
@@ -91,22 +105,28 @@ public class ClubController implements Initializable {
         List cList = HibernateUtilClub.getAll();
         clubList.setAll(cList);
         clubTableView.setItems(clubList);
-        clubComboBox.setItems(clubList);
     }
 
     @FXML
     public void removeClub() {
+        if(clubTableView.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Nie wybrano klubu do usunięcia!");
+            return;
+        } else if(clubTableView.getSelectionModel().getSelectedItem().getCompetitors().size() !=0
+                || clubTableView.getSelectionModel().getSelectedItem().getTrainers().size() != 0) {
+            DialogsUtil.errorDialog("Nie można usunąć klubu, do którego przypisani są zawodnicy lub trenerzy!");
+            return;
+        }
         // remove data from database
-        Club club = clubComboBox.getSelectionModel().getSelectedItem();
-        HibernateUtilClub.deleteClub(club);
+        Club club = clubTableView.getSelectionModel().getSelectedItem();
+        HibernateUtilClub.removeClub(club);
         // clearing
-        clubComboBox.getSelectionModel().clearSelection();
+        clubTableView.getSelectionModel().clearSelection();
         // refresh view
         ObservableList<Club> clubList = FXCollections.observableArrayList();
         List cList = HibernateUtilClub.getAll();
         clubList.setAll(cList);
         clubTableView.setItems(clubList);
-        clubComboBox.setItems(clubList);
     }
 
     @FXML

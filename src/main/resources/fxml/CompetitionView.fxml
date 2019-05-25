@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CompetitionController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CompetitionController">
    <children>
       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
          <children>
-            <Label text="Dodaj/usuń konkurencję">
+            <Label text="Dodaj konkurencję">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -29,7 +29,6 @@
                   <Label text="Płeć" />
                   <ChoiceBox fx:id="genderComboBox" prefHeight="25.0" prefWidth="39.0" />
                   <Button fx:id="addCompetitionButton" mnemonicParsing="false" onAction="#addCompetition" text="Dodaj" />
-                  <Button fx:id="deleteCompetitionButton" mnemonicParsing="false" onAction="#removeCompetition" text="Usuń" />
                </children>
             </HBox>
          </children>
@@ -42,6 +41,7 @@
             <TableColumn fx:id="recordColumn" prefWidth="349.0" text="Najlepszy czas" />
         </columns>
       </TableView>
+      <Button fx:id="deleteCompetitionButton" mnemonicParsing="false" onAction="#removeCompetition" text="Usuń zaznaczoną" />
       <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="20.0">
          <children>
             <Label text="Dodaj zaznaczoną do zawodów">

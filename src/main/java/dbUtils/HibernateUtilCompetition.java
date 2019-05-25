@@ -11,12 +11,18 @@ public class HibernateUtilCompetition {
     protected static EntityManager em = HibernateUtil.getEm();
 
     public static List<Competition> getAll() {
+        //EntityManager em = HibernateUtil.createEM();
+        //em.getTransaction().begin();
         List competitionList = em.createQuery("FROM Competition").getResultList();
+        //em.close();
         return competitionList;
     }
 
     public static Competition getById(Long id) {
+        //EntityManager em = HibernateUtil.createEM();
+        //em.getTransaction().begin();
         Competition competition = em.find(Competition.class, id);
+        //em.close();
         return competition;
     }
 
@@ -27,29 +33,13 @@ public class HibernateUtilCompetition {
     }
 
     public static List<Record> getAllRecords(Competition competition) {
+        //EntityManager em = HibernateUtil.createEM();
+        //em.getTransaction().begin();
         List recordList =
                 em.createQuery("SELECT r FROM Competition c JOIN Record r on c.competitionId=r.competition.competitionId where c.competitionId=:id")
                 .setParameter("id", competition.getCompetitionId()).getResultList();
+        //em.close();
         return recordList;
-    }
-
-    public static Record getBestRecord(Competition competition) {
-        List<Record> recordList = getAllRecords(competition);
-        Record record = null;
-        if(recordList != null) {
-            int seconds = 99999;
-            for(Record r : recordList) {
-                int tmpSeconds = 0;
-                if(r.getMinutes() != 0) tmpSeconds += r.getMinutes()*60;
-                tmpSeconds += r.getSeconds();
-                if(tmpSeconds < seconds) {
-                    record = r;
-                } else if(tmpSeconds == seconds) {
-                    if(record.getHundredth() > r.getHundredth()) record = r;
-                }
-            }
-        }
-        return record;
     }
 
     public static void addCompetition(Competition competition) {
