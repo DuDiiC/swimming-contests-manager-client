@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -18,19 +19,21 @@ public class Main extends Application {
         BorderPane borderPane = loader.load();
         Scene scene = new Scene(borderPane);
 
+        scene.getStylesheets().add(getClass().getResource("/styles/dark_mode.css").toExternalForm());
+
         // set database connection
         HibernateUtil.createEM();
 
         // set theme
-        Application.setUserAgentStylesheet(STYLESHEET_CASPIAN);
+        //Application.setUserAgentStylesheet(STYLESHEET_CASPIAN);
 
         // show app
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
+//        primaryStage.setOpacity(0.9);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
-        primaryStage.setTitle("Aplikacja bazodanowa");
+        primaryStage.setTitle("Swimming Contests Manager");
         primaryStage.show();
-
-
     }
 }
