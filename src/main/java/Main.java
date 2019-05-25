@@ -28,8 +28,7 @@ public class Main extends Application {
         //Application.setUserAgentStylesheet(STYLESHEET_CASPIAN);
 
         // show app
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
-//        primaryStage.setOpacity(0.9);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();

@@ -80,8 +80,10 @@ public class RegistrationController implements Initializable {
         }
         cList.addAll(cListToAdd);
         contest.setCompetitors(cList);
-
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
+        // cleaning
+        contestComboBox.getSelectionModel().clearSelection();
+        clubComboBox.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -105,10 +107,9 @@ public class RegistrationController implements Initializable {
         }
         contest.setCompetitors(actualList);
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
-
-        // clearing
-
-        // refresh view
+        // cleaning
+        contestComboBox.getSelectionModel().clearSelection();
+        clubComboBox.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -125,6 +126,11 @@ public class RegistrationController implements Initializable {
         contest.setCompetitors(cList);
 
         HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
+        // cleaning
+        contestComboBox.getSelectionModel().clearSelection();
+        competitorComboBox.getSelectionModel().clearSelection();
+        clubComboBox.getSelectionModel().clearSelection();
+
     }
 
     @FXML
@@ -146,5 +152,9 @@ public class RegistrationController implements Initializable {
         contest.setCompetitors(cList);
 
         HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
+        // cleaning
+        contestComboBox.getSelectionModel().clearSelection();
+        competitorComboBox.getSelectionModel().clearSelection();
+        clubComboBox.getSelectionModel().clearSelection();
     }
 }
