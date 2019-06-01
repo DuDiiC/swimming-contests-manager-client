@@ -3,6 +3,7 @@ package controllers;
 import dbModels.Competition;
 import dbModels.Competitor;
 import dbModels.Contest;
+import dbUtils.HibernateUtil;
 import dbUtils.HibernateUtilContest;
 import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
@@ -86,16 +87,26 @@ public class ContestController implements Initializable {
             Contest contest = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            contest.setName(event.getNewValue());
-            HibernateUtilContest.updateContest(contest);
+            if(!event.getNewValue().equals("")) {
+                HibernateUtil.getEm().getTransaction().begin();
+                contest.setName(event.getNewValue());
+                HibernateUtil.getEm().getTransaction().commit();
+//              HibernateUtilContest.updateContest(contest);
+            }
+            event.getTableView().refresh();
         });
         cityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         cityColumn.setOnEditCommit(event -> {
             Contest contest = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            contest.setCity(event.getNewValue());
-            HibernateUtilContest.updateContest(contest);
+            if(!event.getNewValue().equals("")) {
+                HibernateUtil.getEm().getTransaction().begin();
+                contest.setCity(event.getNewValue());
+                HibernateUtil.getEm().getTransaction().commit();
+//                HibernateUtilContest.updateContest(contest);
+            }
+            event.getTableView().refresh();
         });
 
         // competitorTableView

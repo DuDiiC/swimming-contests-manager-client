@@ -2,6 +2,7 @@ package controllers;
 
 import dbModels.Club;
 import dbModels.Trainer;
+import dbUtils.HibernateUtil;
 import dbUtils.HibernateUtilClub;
 import dbUtils.HibernateUtilTrainer;
 import fxUtils.DialogsUtil;
@@ -64,16 +65,26 @@ public class TrainerController implements Initializable {
             Trainer trainer = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            trainer.setName(event.getNewValue());
-            HibernateUtilTrainer.updateTrainer(trainer);
+            if(!event.getNewValue().equals("")) {
+                HibernateUtil.getEm().getTransaction().begin();
+                trainer.setName(event.getNewValue());
+                HibernateUtil.getEm().getTransaction().commit();
+//            HibernateUtilTrainer.updateTrainer(trainer);
+            }
+            event.getTableView().refresh();
         });
         surnameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         surnameColumn.setOnEditCommit(event -> {
             Trainer trainer = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            trainer.setSurname(event.getNewValue());
-            HibernateUtilTrainer.updateTrainer(trainer);
+            if(!event.getNewValue().equals("")) {
+                HibernateUtil.getEm().getTransaction().begin();
+                trainer.setSurname(event.getNewValue());
+                HibernateUtil.getEm().getTransaction().commit();
+//                HibernateUtilTrainer.updateTrainer(trainer);
+            }
+            event.getTableView().refresh();
         });
     }
 

@@ -3,6 +3,7 @@ package controllers;
 import dbModels.Club;
 import dbModels.Competitor;
 import dbModels.Trainer;
+import dbUtils.HibernateUtil;
 import dbUtils.HibernateUtilClub;
 import fxUtils.DialogsUtil;
 import javafx.beans.property.SimpleStringProperty;
@@ -63,16 +64,26 @@ public class ClubController implements Initializable {
             Club club = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            club.setName(event.getNewValue());
-            HibernateUtilClub.updateClub(club);
+            if(!event.getNewValue().equals("")) {
+                HibernateUtil.getEm().getTransaction().begin();
+                club.setName(event.getNewValue());
+                HibernateUtil.getEm().getTransaction().commit();
+//                HibernateUtilClub.updateClub(club);
+            }
+            event.getTableView().refresh();
         });
         cityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         cityColumn.setOnEditCommit(event -> {
             Club club = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            club.setCity(event.getNewValue());
-            HibernateUtilClub.updateClub(club);
+            if(!event.getNewValue().equals("")) {
+                HibernateUtil.getEm().getTransaction().begin();
+                club.setCity(event.getNewValue());
+                HibernateUtil.getEm().getTransaction().commit();
+//              HibernateUtilClub.updateClub(club);
+            }
+            event.getTableView().refresh();
         });
 
         // trainerTableView
