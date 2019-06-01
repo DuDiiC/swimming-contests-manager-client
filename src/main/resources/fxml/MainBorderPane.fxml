@@ -2,47 +2,86 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainBorderPaneController">
    <left>
-      <VBox alignment="CENTER" prefHeight="700.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <ToggleButton fx:id="contestsButton" mnemonicParsing="false" onAction="#viewContests" prefHeight="80.0" prefWidth="150.0" text="Zawody">
+            <ToggleButton fx:id="contestsButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#viewContests" prefHeight="100.0" prefWidth="200.0" text="Zawody">
                <toggleGroup>
                   <ToggleGroup fx:id="tables" />
                </toggleGroup>
                <font>
                   <Font name="System Bold" size="16.0" />
-               </font></ToggleButton>
-            <ToggleButton fx:id="registrationButton" mnemonicParsing="false" onAction="#viewRegistration" prefHeight="80.0" prefWidth="150.0" text="Zapisy na zawody" textAlignment="CENTER" toggleGroup="$tables" wrapText="true">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/contest_button.png" />
+                     </image>
+                  </ImageView>
+               </graphic></ToggleButton>
+            <ToggleButton fx:id="registrationButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#viewRegistration" prefHeight="100.0" prefWidth="200.0" text="Zapisy na zawody" textAlignment="CENTER" toggleGroup="$tables" wrapText="true">
                <font>
                   <Font name="System Bold" size="16.0" />
-               </font></ToggleButton>
-            <ToggleButton fx:id="competitionsButton" mnemonicParsing="false" onAction="#viewCompetitions" prefHeight="80.0" prefWidth="150.0" text="Konkurencje" toggleGroup="$tables">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/registration_button.png" />
+                     </image></ImageView>
+               </graphic></ToggleButton>
+            <ToggleButton fx:id="competitionsButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#viewCompetitions" prefHeight="100.0" prefWidth="200.0" text="Konkurencje" toggleGroup="$tables">
                <font>
                   <Font name="System Bold" size="16.0" />
-               </font></ToggleButton>
-            <ToggleButton fx:id="clubsButton" mnemonicParsing="false" onAction="#viewClubs" prefHeight="80.0" prefWidth="150.0" text="Kluby" toggleGroup="$tables">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/competition_button.png" />
+                     </image></ImageView>
+               </graphic></ToggleButton>
+            <ToggleButton fx:id="clubsButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#viewClubs" prefHeight="100.0" prefWidth="200.0" text="Kluby" toggleGroup="$tables">
                <font>
                   <Font name="System Bold" size="16.0" />
-               </font></ToggleButton>
-            <ToggleButton fx:id="trainersButton" mnemonicParsing="false" onAction="#viewTrainers" prefHeight="80.0" prefWidth="150.0" text="Trenerzy" toggleGroup="$tables">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/club_button.png" />
+                     </image></ImageView>
+               </graphic></ToggleButton>
+            <ToggleButton fx:id="trainersButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#viewTrainers" prefHeight="100.0" prefWidth="200.0" text="Trenerzy" toggleGroup="$tables">
                <font>
                   <Font name="System Bold" size="16.0" />
-               </font></ToggleButton>
-            <ToggleButton fx:id="competitorsButton" mnemonicParsing="false" onAction="#viewCompetitors" prefHeight="80.0" prefWidth="150.0" text="Zawodnicy" toggleGroup="$tables">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/trainer_button.png" />
+                     </image></ImageView>
+               </graphic></ToggleButton>
+            <ToggleButton fx:id="competitorsButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#viewCompetitors" prefHeight="100.0" prefWidth="200.0" text="Zawodnicy" toggleGroup="$tables">
                <font>
                   <Font name="System Bold" size="16.0" />
-               </font></ToggleButton>
-            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exit" prefHeight="80.0" prefWidth="150.0" text="Wyjście">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font></Button>
+               </font>
+               <graphic>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/competitor_button.png" />
+                     </image></ImageView>
+               </graphic></ToggleButton>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -52,7 +91,6 @@
          </BorderPane.margin></VBox>
    </left>
     <center>
-        <fx:include source="DatabaseView.fxml" />
 <!--        <fx:include source="DatabaseView.fxml" />-->
        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="345.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
           <children>
@@ -98,4 +136,14 @@
           </children>
        </VBox>
     </center>
+   <top>
+      <ImageView fitHeight="35.0" fitWidth="35.0" onMouseClicked="#exit" opacity="0.5" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="TOP_RIGHT">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+         <image>
+            <Image url="@../images/exit.png" />
+         </image>
+      </ImageView>
+   </top>
 </BorderPane>

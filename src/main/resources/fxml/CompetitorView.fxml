@@ -26,8 +26,6 @@
                   <TextField fx:id="nameTextField" />
                   <Label text="Nazwisko" />
                   <TextField fx:id="surnameTextField" />
-                  <Label text="Płeć" />
-                  <ComboBox fx:id="genderComboBox" prefWidth="150.0" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -45,13 +43,13 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
+            <Label text="Usuń zawodnika">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Label text="Usuń zawodnika">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
                   <Label text="Klub" />
                   <ComboBox fx:id="clubComboBox2" onAction="#setCompetitors" prefWidth="150.0" />
                   <Button fx:id="deleteAllCompetitorsFromClubButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Usuń wszystkich" />
@@ -82,7 +80,7 @@
                   <Label text="Konkurencja" />
                   <ComboBox fx:id="competitionComboBox" prefWidth="150.0" />
                   <Label text="Czas" />
-                  <TextField fx:id="timeTextField" prefHeight="25.0" prefWidth="114.0" />
+                  <TextField fx:id="timeTextField" prefHeight="25.0" prefWidth="142.0" />
                   <Button fx:id="addRecordButton" mnemonicParsing="false" onAction="#addRecord" text="Dodaj" />
                   <Button fx:id="deleteRecordButton" mnemonicParsing="false" onAction="#removeRecord" text="Usuń zaznaczony" />
                </children>

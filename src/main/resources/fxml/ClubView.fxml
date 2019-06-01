@@ -19,7 +19,10 @@
                </font></Label>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="800.0" spacing="20.0">
                <children>
-                  <Label text="Nazwa" />
+                  <Label text="Nazwa">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                   <TextField fx:id="nameTextField" />
                   <Label text="Miasto" />
                   <TextField fx:id="cityTextField" />
@@ -31,7 +34,7 @@
       <TableView fx:id="clubTableView" onMouseClicked="#selectedInfo" prefHeight="218.0" prefWidth="800.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="399.0" text="Nazwa klubu" />
-          <TableColumn fx:id="cityColumn" minWidth="0.0" prefWidth="400.0" text="Miasto" />
+          <TableColumn fx:id="cityColumn" minWidth="0.0" prefWidth="397.0" text="Miasto" />
         </columns>
       </TableView>
       <Button fx:id="deleteClubButton" mnemonicParsing="false" onAction="#removeClub" text="Usuń zaznaczony" />
@@ -39,12 +42,12 @@
          <children>
             <TableView fx:id="trainerTableView" prefHeight="100.0" prefWidth="400.0">
               <columns>
-                <TableColumn fx:id="trainerColumn" prefWidth="399.0" text="Lista trenerów" />
+                <TableColumn fx:id="trainerColumn" prefWidth="397.0" text="Lista trenerów" />
               </columns>
             </TableView>
             <TableView fx:id="competitorTableView" prefHeight="100.0" prefWidth="400.0">
               <columns>
-                <TableColumn fx:id="competitorColumn" prefWidth="399.0" text="Lista zawodników" />
+                <TableColumn fx:id="competitorColumn" prefWidth="394.0" text="Lista zawodników" />
               </columns>
             </TableView>
          </children>

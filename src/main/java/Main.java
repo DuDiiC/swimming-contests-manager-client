@@ -1,4 +1,3 @@
-import dbUtils.HibernateUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,11 +18,8 @@ public class Main extends Application {
         BorderPane borderPane = loader.load();
         Scene scene = new Scene(borderPane);
 
-        scene.getStylesheets().add(getClass().getResource("/styles/dark_mode.css").toExternalForm());
-
-        // set database connection
-        HibernateUtil.createEM();
-
+//        scene.getStylesheets().add(getClass().getResource("/styles/dark_mode.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/styles/mainCSS.css").toExternalForm());
         // set theme
         //Application.setUserAgentStylesheet(STYLESHEET_CASPIAN);
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Witamy w manadżerze zarządzania zawodami sportowymi!">
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
+         <font>
+            <Font size="30.0" />
+         </font></Label>
+      <Label text="Jako użytkownik masz możliwość:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● przeglądania istniejących zawodów z zapisanymi zawodnikami i konkurenencjami">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● dodawania nowych zawodów, zarządzania nimi i usuwania już istniejących">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● zapisania na zawody oraz wypisania z zawodów zawodników">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● przeglądania konkurencji wraz z najlepszymi uzyskanymi czasami">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● dodawania nowych konkurencji, usuwania już istniejących i dodawanie ich do zawodów">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● przeglądania klubów wraz z trenerami i zawodnikami">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● dodawania nowych klubów i usuwania już istniejących">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● przeglądania zawodników wraz z rekordami, dodawania nowych i usuwania już istniejących">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label prefWidth="850.0" text="● przeglądania trenerów, dodawania nowych i usuwania już istniejących">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+   </children>
+</VBox>

@@ -35,10 +35,10 @@
       </VBox>
       <TableView fx:id="competitionTableView" prefHeight="500.0" prefWidth="600.0">
         <columns>
-          <TableColumn fx:id="styleColumn" prefWidth="214.0" text="Styl" />
-          <TableColumn fx:id="distanceColumn" minWidth="0.0" prefWidth="126.0" text="Dystans" />
-            <TableColumn fx:id="genderColumn" prefWidth="109.0" text="Płeć" />
-            <TableColumn fx:id="recordColumn" prefWidth="349.0" text="Najlepszy czas" />
+          <TableColumn fx:id="styleColumn" prefWidth="148.0" text="Styl" />
+          <TableColumn fx:id="distanceColumn" minWidth="0.0" prefWidth="124.0" text="Dystans" />
+            <TableColumn fx:id="genderColumn" prefWidth="97.0" text="Płeć" />
+            <TableColumn fx:id="recordColumn" prefWidth="429.0" text="Najlepszy czas" />
         </columns>
       </TableView>
       <Button fx:id="deleteCompetitionButton" mnemonicParsing="false" onAction="#removeCompetition" text="Usuń zaznaczoną" />

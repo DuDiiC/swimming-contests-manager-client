@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContestController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="877.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContestController">
    <children>
       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
          <children>
@@ -20,11 +20,20 @@
                </font></Label>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="600.0" spacing="20.0">
                <children>
-                  <Label text="Nazwa" />
+                  <Label text="Nazwa">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                   <TextField fx:id="nameTextField" />
-                  <Label text="Miasto" />
+                  <Label text="Miasto">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                   <TextField fx:id="cityTextField" />
-                  <Label text="Data" />
+                  <Label text="Data">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                   <DatePicker fx:id="dateField" />
                   <Button fx:id="addContestButton" mnemonicParsing="false" onAction="#addContest" text="Dodaj" />
                </children></HBox>
@@ -32,22 +41,22 @@
       </VBox>
       <TableView fx:id="contestTableView" onMouseClicked="#selectedInfo" prefHeight="200.0" prefWidth="800.0">
         <columns>
-          <TableColumn fx:id="nameColumn" prefWidth="289.0" text="Nazwa" />
-          <TableColumn fx:id="cityColumn" prefWidth="257.0" text="Miasto" />
-            <TableColumn fx:id="dateColumn" prefWidth="253.0" text="Data i godzina" />
+          <TableColumn fx:id="nameColumn" prefWidth="328.0" text="Nazwa" />
+          <TableColumn fx:id="cityColumn" prefWidth="308.0" text="Miasto" />
+            <TableColumn fx:id="dateColumn" prefWidth="230.0" text="Data i godzina" />
         </columns>
       </TableView>
       <Button fx:id="deleteContestButton" mnemonicParsing="false" onAction="#removeContest" text="Usuń zaznaczone" />
       <HBox prefHeight="220.0" prefWidth="800.0">
          <children>
-            <TableView fx:id="competitorTableView" prefHeight="250.0" prefWidth="400.0">
+            <TableView fx:id="competitorTableView" prefHeight="216.0" prefWidth="440.0">
               <columns>
-                <TableColumn fx:id="competitorColumn" prefWidth="400.0" text="Zawodnicy zapisani na zawody" />
+                <TableColumn fx:id="competitorColumn" prefWidth="434.0" text="Zawodnicy zapisani na zawody" />
               </columns>
             </TableView>
-            <TableView fx:id="competitionTableView" prefHeight="250.0" prefWidth="400.0">
+            <TableView fx:id="competitionTableView" prefHeight="216.0" prefWidth="432.0">
               <columns>
-                <TableColumn fx:id="competitionColumn" prefWidth="400.0" text="Konkurencje w ramach zawodów" />
+                <TableColumn fx:id="competitionColumn" prefWidth="425.0" text="Konkurencje w ramach zawodów" />
               </columns>
             </TableView>
          </children>
