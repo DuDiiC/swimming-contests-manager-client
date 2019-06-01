@@ -53,5 +53,49 @@
    </left>
     <center>
         <fx:include source="DatabaseView.fxml" />
+<!--        <fx:include source="DatabaseView.fxml" />-->
+       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="345.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+          <children>
+             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+                <children>
+                  <ImageView fitHeight="100.0" fitWidth="50.0" opacity="0.75" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/user.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                   <Label text="LOGIN">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></Label>
+                   <TextField fx:id="loginTextField" />
+                </children>
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+                <children>
+                  <ImageView fitHeight="100.0" fitWidth="40.0" opacity="0.75" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/password.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                   <Label text="HASŁO">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></Label>
+                   <PasswordField fx:id="passwordTextField" />
+                </children>
+             </HBox>
+             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+                <children>
+                   <Button mnemonicParsing="false" onAction="#logIn" prefHeight="30.0" prefWidth="100.0" text="zaloguj" />
+                </children>
+             </HBox>
+          </children>
+       </VBox>
     </center>
 </BorderPane>
