@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "RECORD")
 @SequenceGenerator(name = "generate_record_id", sequenceName = "generate_record_id", allocationSize = 1)
-public class Record implements Serializable {
+public class Record implements Serializable, Comparable<Record> {
 
     @Id
     @Column(name = "record_id", nullable = false)
@@ -109,6 +109,24 @@ public class Record implements Serializable {
 
     public void setCompetition(Competition competition) {
         this.competition = competition;
+    }
+
+    @Override
+    /**
+     * Jesli jest dodatnie to nowy czas jest wolniejszy, jesli ujemne, to nowy czas jest szybszy, jesli rowne to sa takie same
+     * this 00:30:30
+     * o    00:30:12
+     */
+    public int compareTo(Record o) {
+        int thisWholeSeconds = this.minutes*60 + this.seconds;
+        int oWholeSeconds = o.getMinutes()*60 + o.getSeconds();
+        if(thisWholeSeconds != oWholeSeconds) {
+            // jesli czas z this jest wolniejszy to dodatnie, wpw. ujemne
+            return thisWholeSeconds-oWholeSeconds;
+        } else {
+            // jesli czas z this jest wolniejszy to dodatnie
+            return this.hundredth-o.getHundredth();
+        }
     }
 }
 
