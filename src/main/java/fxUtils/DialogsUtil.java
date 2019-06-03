@@ -3,6 +3,8 @@ package fxUtils;
 import javafx.scene.control.Alert;
 import javafx.stage.StageStyle;
 
+import java.text.Normalizer;
+
 public class DialogsUtil {
 
     public static void errorDialog(String alertText) {
@@ -11,6 +13,7 @@ public class DialogsUtil {
         alert.setTitle("Błąd!");
         alert.setHeaderText("Błąd!");
         alert.setContentText(alertText);
+        alert.getDialogPane().getStylesheets().add(Normalizer.Form.class.getResource("/mainCSS.css").toExternalForm());
         alert.showAndWait();
     }
 
@@ -20,6 +23,7 @@ public class DialogsUtil {
         alert.setTitle("Informacja");
         alert.setHeaderText("Informacja");
         alert.setContentText(alertText);
+        alert.getDialogPane().getStylesheets().add(Normalizer.Form.class.getResource("/mainCSS.css").toExternalForm());
         alert.showAndWait();
     }
 }
