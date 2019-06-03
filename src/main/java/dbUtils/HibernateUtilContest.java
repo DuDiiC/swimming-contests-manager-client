@@ -66,6 +66,18 @@ public class HibernateUtilContest {
         em.getTransaction().commit();
     }
 
+    public static void addCompetitor(Contest contest, Competitor competitor) {
+        em.getTransaction().begin();
+        em.merge(contest);
+        em.getTransaction().commit();
+    }
+
+    public static void removeCompetitor(Contest contest, Competitor competitor) {
+        em.getTransaction().begin();
+        em.merge(contest);
+        em.getTransaction().commit();
+    }
+
     public static void addOrRemoveCompetitor(Contest contest, Competitor competitor) {
         em.getTransaction().begin();
         em.merge(contest);

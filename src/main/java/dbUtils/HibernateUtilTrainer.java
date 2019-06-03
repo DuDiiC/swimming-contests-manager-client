@@ -42,7 +42,8 @@ public class HibernateUtilTrainer {
 
     public static void removeTrainer(Trainer trainer) {
         em.getTransaction().begin();
-        em.remove(em.contains(trainer) ? trainer : em.merge(trainer));
+        //em.remove(em.contains(trainer) ? trainer : em.merge(trainer));
+        em.remove(trainer);
         em.getTransaction().commit();
     }
 

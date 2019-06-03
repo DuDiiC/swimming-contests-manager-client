@@ -27,7 +27,8 @@ public class HibernateUtilRecord {
 
     public static void removeRecord(Record record) {
         em.getTransaction().begin();
-        em.remove(em.contains(record) ? record : em.merge(record));
+        //em.remove(em.contains(record) ? record : em.merge(record));
+        em.remove(record);
         em.getTransaction().commit();
     }
 }

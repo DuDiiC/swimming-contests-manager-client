@@ -6,6 +6,7 @@ import dbUtils.HibernateUtil;
 import dbUtils.HibernateUtilClub;
 import dbUtils.HibernateUtilTrainer;
 import fxUtils.DialogsUtil;
+import fxUtils.RegexUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -65,11 +66,12 @@ public class TrainerController implements Initializable {
             Trainer trainer = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            if(!event.getNewValue().equals("")) {
+            if(!RegexUtil.nameRegex(event.getNewValue())) {
+                DialogsUtil.errorDialog("Podano niepoprawne imię!");
+            } else if(!event.getNewValue().equals("")) {
                 HibernateUtil.getEm().getTransaction().begin();
                 trainer.setName(event.getNewValue());
                 HibernateUtil.getEm().getTransaction().commit();
-//            HibernateUtilTrainer.updateTrainer(trainer);
             }
             event.getTableView().refresh();
         });
@@ -78,11 +80,12 @@ public class TrainerController implements Initializable {
             Trainer trainer = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            if(!event.getNewValue().equals("")) {
+            if(!RegexUtil.surnameRegex(event.getNewValue())) {
+                DialogsUtil.errorDialog("Podano niepoprawne nazwisko!");
+            } else if(!event.getNewValue().equals("")) {
                 HibernateUtil.getEm().getTransaction().begin();
                 trainer.setSurname(event.getNewValue());
                 HibernateUtil.getEm().getTransaction().commit();
-//                HibernateUtilTrainer.updateTrainer(trainer);
             }
             event.getTableView().refresh();
         });
@@ -93,6 +96,14 @@ public class TrainerController implements Initializable {
         // add data to database
         if(nameTextField.getText().isEmpty() || surnameTextField.getText().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowego trenera!");
+            return;
+        } else if(!RegexUtil.nameRegex(nameTextField.getText())) {
+            DialogsUtil.errorDialog("Podano niepoprawne imię!");
+            nameTextField.clear();
+            return;
+        } else if(!RegexUtil.surnameRegex(surnameTextField.getText())) {
+            DialogsUtil.errorDialog("Podano niepoprawne nazwisko!");
+            surnameTextField.clear();
             return;
         }
         Trainer trainer = new Trainer();
@@ -139,10 +150,12 @@ public class TrainerController implements Initializable {
     @FXML
     public void setTrainers() {
         Club club = clubComboBox2.getSelectionModel().getSelectedItem();
-        ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
-        List tList = HibernateUtilClub.getAllTrainers(club);
-        trainerList.setAll(tList);
-        trainerComboBox.setItems(trainerList);
+        if(club != null) {
+            ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
+            List tList = HibernateUtilClub.getAllTrainers(club);
+            trainerList.setAll(tList);
+            trainerComboBox.setItems(trainerList);
+        }
     }
 
     private ObservableList<Trainer> getTrainer() {

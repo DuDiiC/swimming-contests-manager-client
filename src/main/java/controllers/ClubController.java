@@ -6,6 +6,7 @@ import dbModels.Trainer;
 import dbUtils.HibernateUtil;
 import dbUtils.HibernateUtilClub;
 import fxUtils.DialogsUtil;
+import fxUtils.RegexUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,7 +69,6 @@ public class ClubController implements Initializable {
                 HibernateUtil.getEm().getTransaction().begin();
                 club.setName(event.getNewValue());
                 HibernateUtil.getEm().getTransaction().commit();
-//                HibernateUtilClub.updateClub(club);
             }
             event.getTableView().refresh();
         });
@@ -77,11 +77,12 @@ public class ClubController implements Initializable {
             Club club = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            if(!event.getNewValue().equals("")) {
+            if(!RegexUtil.cityRegex(event.getNewValue())) {
+                DialogsUtil.errorDialog("Niepoprawna nazwa miasta!");
+            } else if(!event.getNewValue().equals("")) {
                 HibernateUtil.getEm().getTransaction().begin();
                 club.setCity(event.getNewValue());
                 HibernateUtil.getEm().getTransaction().commit();
-//              HibernateUtilClub.updateClub(club);
             }
             event.getTableView().refresh();
         });

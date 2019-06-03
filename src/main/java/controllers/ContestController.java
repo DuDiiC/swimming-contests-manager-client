@@ -6,6 +6,7 @@ import dbModels.Contest;
 import dbUtils.HibernateUtil;
 import dbUtils.HibernateUtilContest;
 import fxUtils.DialogsUtil;
+import fxUtils.RegexUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -91,7 +92,6 @@ public class ContestController implements Initializable {
                 HibernateUtil.getEm().getTransaction().begin();
                 contest.setName(event.getNewValue());
                 HibernateUtil.getEm().getTransaction().commit();
-//              HibernateUtilContest.updateContest(contest);
             }
             event.getTableView().refresh();
         });
@@ -100,11 +100,12 @@ public class ContestController implements Initializable {
             Contest contest = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            if(!event.getNewValue().equals("")) {
+            if(!RegexUtil.cityRegex(event.getNewValue())) {
+                DialogsUtil.errorDialog("Niepoprawna nazwa miasta!");
+            } else if(!event.getNewValue().equals("")) {
                 HibernateUtil.getEm().getTransaction().begin();
                 contest.setCity(event.getNewValue());
                 HibernateUtil.getEm().getTransaction().commit();
-//                HibernateUtilContest.updateContest(contest);
             }
             event.getTableView().refresh();
         });
@@ -123,6 +124,10 @@ public class ContestController implements Initializable {
     private void addContest() {
         if(nameTextField.getText().isEmpty() || cityTextField.getText().isEmpty() || dateField.getEditor().getText().isEmpty()) {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowe zawody!");
+            return;
+        } else if(!RegexUtil.cityRegex(cityTextField.getText())) {
+            DialogsUtil.errorDialog("Niepoprawna nazwa miasta!");
+            cityTextField.clear();
             return;
         }
         // add data to database

@@ -51,9 +51,11 @@ public class RegistrationController implements Initializable {
     @FXML
     public void showCompetitors() {
         Club club = clubComboBox.getSelectionModel().getSelectedItem();
-        ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
-        competitorList.setAll(HibernateUtilClub.getAllCompetitors(club));
-        competitorComboBox.setItems(competitorList);
+        if(club != null) {
+            ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
+            competitorList.setAll(HibernateUtilClub.getAllCompetitors(club));
+            competitorComboBox.setItems(competitorList);
+        }
     }
 
     @FXML
@@ -82,8 +84,8 @@ public class RegistrationController implements Initializable {
         contest.setCompetitors(cList);
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
         // cleaning
-        contestComboBox.getSelectionModel().clearSelection();
-        clubComboBox.getSelectionModel().clearSelection();
+        cleaningAfterRegistration();
+
     }
 
     @FXML
@@ -108,8 +110,7 @@ public class RegistrationController implements Initializable {
         contest.setCompetitors(actualList);
         HibernateUtilContest.addOrRemoveAllCompetitors(contest);
         // cleaning
-        contestComboBox.getSelectionModel().clearSelection();
-        clubComboBox.getSelectionModel().clearSelection();
+        cleaningAfterRegistration();
     }
 
     @FXML
@@ -121,15 +122,22 @@ public class RegistrationController implements Initializable {
         Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
         Competitor competitor = competitorComboBox.getSelectionModel().getSelectedItem();
 
+        for(Competitor comp : contest.getCompetitors()) {
+            if(comp.getPesel() == competitor.getPesel()) {
+                DialogsUtil.errorDialog("Ten zawodnik jest już zapisany na te zawody!");
+                cleaningAfterRegistration();
+                return;
+            }
+        }
+
         List<Competitor> cList = contest.getCompetitors();
         cList.add(competitor);
         contest.setCompetitors(cList);
 
         HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
+
         // cleaning
-        contestComboBox.getSelectionModel().clearSelection();
-        competitorComboBox.getSelectionModel().clearSelection();
-        clubComboBox.getSelectionModel().clearSelection();
+        cleaningAfterRegistration();
 
     }
 
@@ -143,18 +151,28 @@ public class RegistrationController implements Initializable {
         Competitor competitor = competitorComboBox.getSelectionModel().getSelectedItem();
 
         List<Competitor> cList = contest.getCompetitors();
+        boolean is = false;
         for(Competitor c : cList) {
             if(c.getPesel() == competitor.getPesel()) {
                 cList.remove(competitor);
+                is = true;
                 break;
             }
         }
-        contest.setCompetitors(cList);
-
-        HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
+        if(is) {
+            contest.setCompetitors(cList);
+            HibernateUtilContest.addOrRemoveCompetitor(contest, competitor);
+        } else {
+            DialogsUtil.errorDialog("Ten zawodnik nie jest zapisany na te zawody!");
+        }
         // cleaning
-        contestComboBox.getSelectionModel().clearSelection();
-        competitorComboBox.getSelectionModel().clearSelection();
+        cleaningAfterRegistration();
+    }
+
+    private void cleaningAfterRegistration() {
         clubComboBox.getSelectionModel().clearSelection();
+        competitorComboBox.getSelectionModel().clearSelection();
+        competitorComboBox.setItems(null);
+        contestComboBox.getSelectionModel().clearSelection();
     }
 }

@@ -6,6 +6,7 @@ import dbModels.Competitor;
 import dbModels.Record;
 import dbUtils.*;
 import fxUtils.DialogsUtil;
+import fxUtils.RegexUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,8 +19,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CompetitorController implements Initializable {
 
@@ -96,10 +95,11 @@ public class CompetitorController implements Initializable {
             Competitor competitor = event.getTableView().getItems().get(
                 event.getTablePosition().getRow()
             );
-            if(!event.getNewValue().equals("")) {
+            if(!RegexUtil.nameRegex(event.getNewValue())) {
+                DialogsUtil.errorDialog("Podano niepoprawne imię!");
+            } else if(!event.getNewValue().equals("")) {
                 HibernateUtil.getEm().getTransaction().begin();
                 competitor.setName(event.getNewValue());
-//            HibernateUtilCompetitor.updateCompetitor(competitor);
                 HibernateUtil.getEm().getTransaction().commit();
             }
             event.getTableView().refresh();
@@ -109,10 +109,11 @@ public class CompetitorController implements Initializable {
             Competitor competitor = event.getTableView().getItems().get(
                     event.getTablePosition().getRow()
             );
-            if(!event.getNewValue().equals("")) {
+            if(!RegexUtil.surnameRegex(event.getNewValue())) {
+                DialogsUtil.errorDialog("Podano niepoprawne nazwisko!");
+            } else if(!event.getNewValue().equals("")) {
                 HibernateUtil.getEm().getTransaction().begin();
                 competitor.setSurname(event.getNewValue());
-                //HibernateUtilCompetitor.updateCompetitor(competitor);
                 HibernateUtil.getEm().getTransaction().commit();
             }
             event.getTableView().refresh();
@@ -138,16 +139,24 @@ public class CompetitorController implements Initializable {
                 || clubComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowego zawodnika!");
             return;
-        } else if(!correctPeselRegex(peselTextField.getText())) {
+        } else if(!RegexUtil.peselRegex(peselTextField.getText())) {
             DialogsUtil.errorDialog("Numer pesel musi składać się z 11 cyfr");
-            peselTextField.clear();
-            return;
-        } else if(HibernateUtil.getEm().find(Competitor.class, Long.valueOf(peselTextField.getText())) != null) {
-            DialogsUtil.errorDialog("Zawodnik o takim peselu już istnieje!");
             peselTextField.clear();
             return;
         } else if(!controlSum(peselTextField.getText())) {
             DialogsUtil.errorDialog("Podano niepoprawny numer pesel!");
+            peselTextField.clear();
+            return;
+        } else if(!RegexUtil.nameRegex(nameTextField.getText())) {
+            DialogsUtil.errorDialog("Podano niepoprawne imię!");
+            nameTextField.clear();
+            return;
+        } else if(!RegexUtil.surnameRegex(surnameTextField.getText())) {
+            DialogsUtil.errorDialog("Podano niepoprawne nazwisko!");
+            surnameTextField.clear();
+            return;
+        } else if(HibernateUtil.getEm().find(Competitor.class, Long.valueOf(peselTextField.getText())) != null) {
+            DialogsUtil.errorDialog("Zawodnik o takim peselu już istnieje!");
             peselTextField.clear();
             return;
         }
@@ -166,18 +175,17 @@ public class CompetitorController implements Initializable {
         competitorComboBox.setItems(competitorList);
     }
 
-    private String genderFromPesel(String text) {
-        if(Character.getNumericValue(text.charAt(9))%2 == 0) {
-            return "K";
-        } else return "M";
-    }
-
     @FXML
     public void removeCompetitor() {
         // remove data from database
         if(clubComboBox2.getSelectionModel().isEmpty() || competitorComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawodnika do usunięcia!");
             return;
+        } else if(competitorComboBox.getSelectionModel().getSelectedItem().getRecords().size() != 0) {
+            DialogsUtil.errorDialog("Nie można usunąć zawodnika z przypisanymi rekordami!");
+            return;
+        } else if(competitorComboBox.getSelectionModel().getSelectedItem().getContests().size() != 0) {
+            DialogsUtil.errorDialog("Nie można usunąć zawodnika zapisanego na zawody!");
         }
         Competitor competitor = competitorComboBox.getSelectionModel().getSelectedItem();
         HibernateUtilCompetitor.removeCompetitor(competitor);
@@ -186,7 +194,7 @@ public class CompetitorController implements Initializable {
         // refresh view
         ObservableList<Competitor> competitorList = getCompetitors();
         competitorTableView.setItems(competitorList);
-        competitorComboBox.setItems(competitorList);
+        competitorComboBox.setItems(null);
     }
 
     @FXML
@@ -195,12 +203,18 @@ public class CompetitorController implements Initializable {
         if(clubComboBox2.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz klub, z którego chcesz usunąć zawodników!");
             return;
+        } else if(someHaveRecords(clubComboBox2.getSelectionModel().getSelectedItem())) {
+            DialogsUtil.errorDialog("Nie można usunąć zawodników, niektórzy posiadają rekordy, musisz je najpierw usunąć!");
+            return;
+        } else if (someTakePartInContests(clubComboBox2.getSelectionModel().getSelectedItem())) {
+            DialogsUtil.errorDialog("Nie można usunąć zawodników, niektórzy z nich są zapisani na zawody, musisz ich najpierw wypisać!");
+            return;
         }
         Club club = clubComboBox2.getSelectionModel().getSelectedItem();
         HibernateUtilCompetitor.removeAllCompetitorsFromClub(club);
         //clearing
         competitorComboBox.setItems(null);
-        clubComboBox2.getSelectionModel().clearSelection(); // todo: czemu rzuca wyjatek?
+        clubComboBox2.getSelectionModel().clearSelection();
         // refresh data
         ObservableList<Competitor> competitorList = getCompetitors();
         competitorTableView.setItems(competitorList);
@@ -229,7 +243,7 @@ public class CompetitorController implements Initializable {
             DialogsUtil.errorDialog("Nie możesz dodać zawodnikowi w konkurencji innej płci!");
             competitionComboBox.getSelectionModel().clearSelection();
             return;
-        } else if(!correctTimeRegex(timeTextField.getText())) {
+        } else if(!RegexUtil.recordRegex(timeTextField.getText())) {
             DialogsUtil.errorDialog("Niepoprawny format czasu, wymagany: xx:yy:zz\n " +
                     "- dwie cyfry na minuty\n " +
                     "- dwie cyfy na sekundy\n " +
@@ -247,7 +261,6 @@ public class CompetitorController implements Initializable {
         record.setCompetition(competitionComboBox.getSelectionModel().getSelectedItem());
 
         // dodanie do bazy rekordu
-        // TODO: POPRAWIC  TRIGGER - JESLI DODAJE REKORD GORSZY OD POPRZEDNIEGO TO SIE DODAJE A NIE POWINIEN
         if(!HibernateUtilRecord.addRecord(record)) {
             DialogsUtil.errorDialog("Nowy czas jest wolniejszy od już istniejącego!");
         }
@@ -272,6 +285,7 @@ public class CompetitorController implements Initializable {
         // cleaning
         recordTableView.getSelectionModel().clearSelection();
         // refresh view
+        competitorTableView.refresh();
         selectedInfo();
     }
 
@@ -294,15 +308,6 @@ public class CompetitorController implements Initializable {
         return recordList;
     }
 
-//    private void setGenderComboBox() {
-//        ObservableList<String> genderList = FXCollections.observableArrayList();
-//        List gList = new ArrayList<String>() {
-//            { add("M"); add("K"); }
-//        };
-//        genderList.addAll(gList);
-//        genderComboBox.setItems(genderList);
-//    }
-
     private void setPropertiesForCompetitorTableView() {
         competitorTableView.setPlaceholder(new Label("Brak zawodników do wyświetlenia"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -320,18 +325,6 @@ public class CompetitorController implements Initializable {
         clubComboBox.getSelectionModel().clearSelection();
     }
 
-    private boolean correctPeselRegex(String pesel) {
-        Pattern pattern = Pattern.compile("[0-9]{11}");
-        Matcher matcher = pattern.matcher(pesel);
-        return matcher.matches();
-    }
-
-    private boolean correctTimeRegex(String time) {
-        Pattern pattern = Pattern.compile("[0-9]{2}:[0-5][0-9]:[0-9]{2}");
-        Matcher matcher = pattern.matcher(time);
-        return matcher.matches();
-    }
-
     private boolean controlSum(String text) {
         int[] numbers = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
         int controlSum = 0;
@@ -342,5 +335,29 @@ public class CompetitorController implements Initializable {
         controlSum = 10 - controlSum;
         controlSum %= 10;
         return Character.getNumericValue(text.charAt(10)) == controlSum;
+    }
+
+    private String genderFromPesel(String text) {
+        if(Character.getNumericValue(text.charAt(9))%2 == 0) {
+            return "K";
+        } else return "M";
+    }
+
+    private boolean someHaveRecords(Club club) {
+        for(Competitor comp : club.getCompetitors()) {
+            if(comp.getRecords().size() != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean someTakePartInContests(Club club) {
+        for(Competitor comp : club.getCompetitors()) {
+            if(comp.getContests().size() != 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

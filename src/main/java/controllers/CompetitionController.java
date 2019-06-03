@@ -6,6 +6,7 @@ import dbModels.Record;
 import dbUtils.HibernateUtilCompetition;
 import dbUtils.HibernateUtilContest;
 import fxUtils.DialogsUtil;
+import fxUtils.RegexUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -92,10 +93,18 @@ public class CompetitionController implements Initializable {
         if(styleComboBox.getSelectionModel().isEmpty() || distanceTextField.getText().isEmpty() || genderComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nową konkurencję!");
             return;
-        } else if(Integer.valueOf(distanceTextField.getText())%25 != 0) {
+        } else if(!RegexUtil.distanceRegex(distanceTextField.getText())) {
             DialogsUtil.errorDialog("Niepoprawny dystans w konkurencji - długość niecki basenu to 25 m," +
                     " musisz podać wielokrotność tej liczby.");
             distanceTextField.clear();
+            return;
+        } else if(HibernateUtilCompetition.getByStyleAndDistanceAndGender(
+                styleComboBox.getSelectionModel().getSelectedItem(), Integer.valueOf(distanceTextField.getText()),
+                genderComboBox.getSelectionModel().getSelectedItem()) != null) {
+            DialogsUtil.errorDialog("Taka konkurencja już istnieje!");
+            styleComboBox.getSelectionModel().clearSelection();
+            distanceTextField.clear();
+            genderComboBox.getSelectionModel().clearSelection();
             return;
         }
         // add data to database

@@ -5,6 +5,7 @@ import dbModels.Competitor;
 import dbModels.Record;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HibernateUtilCompetitor {
@@ -36,17 +37,23 @@ public class HibernateUtilCompetitor {
 
     public static void removeCompetitor(Competitor competitor) {
         em.getTransaction().begin();
-        em.remove(em.contains(competitor) ? competitor : em.merge(competitor));
+        //em.remove(em.contains(competitor) ? competitor : em.merge(competitor));
+        em.remove(competitor);
         em.getTransaction().commit();
     }
 
     public static void removeAllCompetitorsFromClub(Club club) {
-        List<Competitor> cList = getAll();
-        for(Competitor c : cList) {
-            if(club.getClubId() == c.getClub().getClubId()) {
-                removeCompetitor(c);
-            }
-        }
+//        List<Competitor> cList = club.getCompetitors();
+//            for(Competitor c : cList) {
+//            if(club.getClubId() == c.getClub().getClubId()) {
+//                removeCompetitor(c);
+//            }
+//        }
+        em.getTransaction().begin();
+        Club c = em.find(Club.class, club.getClubId());
+        List<Competitor> newList = new ArrayList<>();
+        c.setCompetitors(newList);
+        em.getTransaction().commit();
     }
 
     public static void updateCompetitor(Competitor competitor) {
