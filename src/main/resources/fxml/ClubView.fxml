@@ -37,7 +37,7 @@
           <TableColumn fx:id="cityColumn" minWidth="0.0" prefWidth="397.0" text="Miasto" />
         </columns>
       </TableView>
-      <Button fx:id="deleteClubButton" mnemonicParsing="false" onAction="#removeClub" text="Usuń zaznaczony" />
+      <Button fx:id="removeClubButton" mnemonicParsing="false" onAction="#removeClub" text="Usuń zaznaczony" />
       <HBox prefHeight="236.0" prefWidth="800.0">
          <children>
             <TableView fx:id="trainerTableView" prefHeight="100.0" prefWidth="400.0">

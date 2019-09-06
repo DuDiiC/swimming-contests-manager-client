@@ -5,9 +5,7 @@ import dbModels.Trainer;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class HibernateUtilTrainer {
-
-    private static EntityManager em = HibernateUtil.getEm();
+public class HibernateUtilTrainer extends HibernateUtilAbstract {
 
     public static List<Trainer> getAll() {
         List trainerList = em.createQuery("FROM Trainer").getResultList();

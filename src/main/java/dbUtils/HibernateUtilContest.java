@@ -7,20 +7,31 @@ import dbModels.Contest;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class HibernateUtilContest {
+/**
+ * Class with database operations for {@link Contest} objects.
+ */
+public class HibernateUtilContest extends HibernateUtilAbstract {
 
-    private static EntityManager em = HibernateUtil.getEm();
-
+    /**
+     * @return {@link List} with all {@link Contest}s in database.
+     */
     public static List<Contest> getAll() {
         List contestList = em.createQuery("FROM Contest").getResultList();
         return contestList;
     }
 
+    /**
+     * @param id {@link Contest} id value in the database.
+     * @return {@link Contest} object with id which is given.
+     */
     public static Contest getById(Long id) {
         Contest contest = em.find(Contest.class, id);
         return contest;
     }
 
+    /**
+     * @return {@link Contest} object by name which was given.
+     */
     public static Contest getByName(Contest contest) {
         List cList = em.createQuery("FROM Contest WHERE name=:name")
                 .setParameter("name", contest.getName()).getResultList();
@@ -30,6 +41,9 @@ public class HibernateUtilContest {
         return null;
     }
 
+    /**
+     * @return {@link List} of all {@link Competitor}s registered on the {@link Contest} which was given.
+     */
     public static List<Competitor> getAllCompetitors(Contest contest) {
         List competitorList =
                 em.createQuery("select comp from Contest c join c.competitors comp where c.id=:id")
@@ -37,6 +51,9 @@ public class HibernateUtilContest {
         return competitorList;
     }
 
+    /**
+     * @return {@link List} of all {@link Competition}s in the {@link Contest} which was given.
+     */
     public static List<Competition> getAllCompetitions(Contest contest) {
         List competitionList =
                 em.createQuery("select comp from Contest c join c.competitions comp where c.id=:id")
@@ -45,9 +62,7 @@ public class HibernateUtilContest {
     }
 
     /**
-     * Add one contest to database
-     * @param contest record to add
-     * @return true if add contest, else if contest was in database
+     * @return true if contest will be added, false if contest was in database
      */
     public static boolean addContest(Contest contest) {
         em.getTransaction().begin();
@@ -60,11 +75,15 @@ public class HibernateUtilContest {
         return true;
     }
 
+    /**
+     * Removes given {@link Contest} object from the database.
+     */
     public static void removeContest(Contest contest) {
         em.getTransaction().begin();
         em.remove(em.contains(contest) ? contest : em.merge(contest));
         em.getTransaction().commit();
     }
+
 
     public static void addCompetitor(Contest contest, Competitor competitor) {
         em.getTransaction().begin();

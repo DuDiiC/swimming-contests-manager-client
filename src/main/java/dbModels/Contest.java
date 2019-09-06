@@ -1,5 +1,8 @@
 package dbModels;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -7,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "CONTEST")
 @SequenceGenerator(name = "generate_contest_id", sequenceName = "generate_contest_id", allocationSize = 1)
@@ -44,61 +49,10 @@ public class Contest implements Serializable {
     )
     private List<Competitor> competitors = new ArrayList<>();
 
-    public Contest() {
-    }
-
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
         String stringDate = sdf.format(date);
         return name + " (" + city + ", " + stringDate + ")";
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long contest_id) {
-        this.id = contest_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public List<Competition> getCompetitions() {
-        return competitions;
-    }
-
-    public void setCompetitions(List<Competition> competitions) {
-        this.competitions = competitions;
-    }
-
-    public List<Competitor> getCompetitors() {
-        return competitors;
-    }
-
-    public void setCompetitors(List<Competitor> competitors) {
-        this.competitors = competitors;
     }
 }

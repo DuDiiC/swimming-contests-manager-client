@@ -1,9 +1,6 @@
 package controllers;
 
-import dbModels.Club;
-import dbModels.Competition;
-import dbModels.Competitor;
-import dbModels.Record;
+import dbModels.*;
 import dbUtils.*;
 import fxUtils.DialogsUtil;
 import fxUtils.RegexUtil;
@@ -20,54 +17,122 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for {CompetitorView.fxml} file.
+ * Supports operations for {@link Competitor} database table.
+ * That class implements {@link Initializable} interface used with controllers in JavaFX.
+ */
 public class CompetitorController implements Initializable {
 
+    /**
+     * {@link TextField} for competitor's name.
+     */
     @FXML private TextField nameTextField;
 
+    /**
+     * {@link TextField} for competitor's surname.
+     */
     @FXML private TextField surnameTextField;
 
+    /**
+     * {@link TextField} for competitor's personal ID.
+     */
     @FXML private TextField peselTextField;
 
+    /**
+     * {@link ComboBox} to select {@link Club} object.
+     */
     @FXML private ComboBox<Club> clubComboBox;
 
+    /**
+     * {@link Button} to add a new {@link Competitor} object to the database.
+     */
     @FXML private Button addCompetitorButton;
 
+    /**
+     * {@link ComboBox} to select {@link Club} object.
+     */
     @FXML private ComboBox<Club> clubComboBox2;
 
-    @FXML private Button deleteAllCompetitorsFromClubButton;
+    /**
+     * {@link Button} to remove all {@link Competitor}s from selected {@link Club}.
+     */
+    @FXML private Button removeeAllCompetitorsFromClubButton;
 
+    /**
+     * {@link ComboBox} to select {@link Competitor} from selected {@link Club}.
+     */
     @FXML private ComboBox<Competitor> competitorComboBox;
 
-    @FXML private Button deleteCompetitorButton;
+    /**
+     * {@link Button} to remove selected {@link Competitor} from selected {@link Club}.
+     */
+    @FXML private Button removeCompetitorButton;
 
+    /**
+     * {@link TableView} for {@link Competitor} class objects.
+     */
     @FXML private TableView<Competitor> competitorTableView;
 
+    /**
+     * {@link TableColumn} with competitor's name.
+     */
     @FXML private TableColumn<Competitor, String> nameColumn;
 
+    /**
+     * {@link TableColumn} with competitor's surname.
+     */
     @FXML private TableColumn<Competitor, String> surnameColumn;
 
+    /**
+     * {@link TableColumn} with competitor's gender.
+     */
     @FXML private TableColumn<Competitor, String> genderColumn;
 
+    /**
+     * {@link TableColumn} with competitor's {@link Club}.
+     */
     @FXML private TableColumn<Competitor, String> clubColumn;
 
+    /**
+     * {@link ComboBox} to select {@link Competition} object.
+     */
     @FXML private ComboBox<Competition> competitionComboBox;
 
+    /**
+     * {@link TextField} for elements of {@link Record} class in format m m : s s : ms ms.
+     */
     @FXML private TextField timeTextField;
 
+    /**
+     * {@link Button} to add new {@link Record} for selected {@link Competitor}.
+     */
     @FXML private Button addRecordButton;
 
-    @FXML private Button deleteRecordButton;
+    /**
+     * {@link Button} to remove selected {@link Record} object from the database.
+     */
+    @FXML private Button removeRecordButton;
 
+    /**
+     * {@link TableView} for informations about {@link Record} class objects.
+     */
     @FXML private TableView<Record> recordTableView;
 
+    /**
+     * {@link TableColumn} with record's {@link Competition}.
+     */
     @FXML private TableColumn<Record, String> competitionColumn;
 
+    /**
+     * {@link TableColumn} with record's value in format m m : s s : ms ms.
+     */
     @FXML private TableColumn<Record, String> timeColumn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        System.out.println(genderFromPesel("96040703840"));
+//        System.out.println(genderFromPesel("96040703840"));
 
         // genderComboBox
         //setGenderComboBox();
@@ -132,6 +197,11 @@ public class CompetitorController implements Initializable {
         timeColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().toString()));
     }
 
+    /**
+     * Called after pressing the {@link CompetitorController#addCompetitorButton} and adding new {@link Competitor} to
+     * the database using values selected in {@link CompetitorController#peselTextField},
+     * {@link CompetitorController#nameTextField} and {@link CompetitorController#surnameTextField}.
+     */
     @FXML
     public void addCompetitor() {
         // add data to database
@@ -175,6 +245,10 @@ public class CompetitorController implements Initializable {
         competitorComboBox.setItems(competitorList);
     }
 
+    /**
+     * Called after pressing {@link CompetitorController#removeCompetitorButton} and removing selected one from the
+     * database using selected item in {@link CompetitorController#competitionComboBox}.
+     */
     @FXML
     public void removeCompetitor() {
         // remove data from database
@@ -197,6 +271,10 @@ public class CompetitorController implements Initializable {
         competitorComboBox.setItems(null);
     }
 
+    /**
+     * Called after pressing {@link CompetitorController#removeeAllCompetitorsFromClubButton} and removing all {@link Competitor}s
+     * from the database using selected item in {@link CompetitorController#clubComboBox2}.
+     */
     @FXML
     public void removeAllCompetitorsFromClub() {
         // remove data from database
@@ -220,6 +298,10 @@ public class CompetitorController implements Initializable {
         competitorTableView.setItems(competitorList);
     }
 
+    /**
+     * Called after choosing item in {@link CompetitorController#clubComboBox2} and set all {@link Competitor}s
+     * in {@link CompetitorController#competitorComboBox}.
+     */
     @FXML
     public void setCompetitors() {
         Club club = clubComboBox2.getSelectionModel().getSelectedItem();
@@ -229,6 +311,10 @@ public class CompetitorController implements Initializable {
         competitorComboBox.setItems(competitorList);
     }
 
+    /**
+     * Called after pressing the {@link CompetitorController#addRecordButton} and adding {@link Record} to the database
+     * using values selected in {@link CompetitorController#timeTextField} and {@link CompetitorController#competitorTableView}.
+     */
     @FXML
     public void addRecord() {
         // add data to database
@@ -271,6 +357,11 @@ public class CompetitorController implements Initializable {
         selectedInfo();
     }
 
+    /**
+     * Called after pressing the {@link CompetitorController#removeRecordButton} and removing selected one from
+     * database using selected items in {@link CompetitorController#competitorTableView} and
+     * {@link CompetitorController#recordTableView}.
+     */
     @FXML
     private void removeRecord() {
         if(competitorTableView.getSelectionModel().isEmpty()) {
@@ -289,6 +380,10 @@ public class CompetitorController implements Initializable {
         selectedInfo();
     }
 
+    /**
+     * Called after select item in {@link CompetitorController#competitorTableView} and set {@link Record}s
+     * in {@link CompetitorController#recordTableView}.
+     */
     @FXML
     public void selectedInfo() {
         Competitor competitor = competitorTableView.getSelectionModel().getSelectedItem();
@@ -296,18 +391,30 @@ public class CompetitorController implements Initializable {
         recordTableView.setItems(recordList);
     }
 
+    /**
+     * Retrieves information about all {@link Competitor} class objects from the database.
+     * @return {@link ObservableList} with all {@link Competitor}s from the database.
+     */
     private ObservableList<Competitor> getCompetitors() {
         ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
         competitorList.addAll(HibernateUtilCompetitor.getAll());
         return competitorList;
     }
 
+    /**
+     * Retrieves information about all {@link Record}s of given {@link Competitor}.
+     * @param competitor {@link Competition} for which the {@link Record}s are given.
+     * @return {@link ObservableList} with all {@link Record}s of given {@link Competitor}.
+     */
     private ObservableList<Record> getRecordsFromCompetitor(Competitor competitor) {
         ObservableList<Record> recordList = FXCollections.observableArrayList();
         recordList.addAll(HibernateUtilCompetitor.getAllRecords(competitor));
         return recordList;
     }
 
+    /**
+     * Sets properties for {@link CompetitorController#competitorTableView}.
+     */
     private void setPropertiesForCompetitorTableView() {
         competitorTableView.setPlaceholder(new Label("Brak zawodników do wyświetlenia"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -317,6 +424,9 @@ public class CompetitorController implements Initializable {
                 param.getValue().getClub().getName() + " " + param.getValue().getClub().getCity()));
     }
 
+    /**
+     * Clears all JavaFX elements after adding new {@link Competitor}.
+     */
     private void clearAfterAddition() {
         peselTextField.clear();
         nameTextField.clear();
@@ -325,24 +435,42 @@ public class CompetitorController implements Initializable {
         clubComboBox.getSelectionModel().clearSelection();
     }
 
-    private boolean controlSum(String text) {
-        int[] numbers = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
-        int controlSum = 0;
-        for(int i = 0; i < 10; i++) {
-            controlSum += (numbers[i] * Character.getNumericValue(text.charAt(i)));
-        }
-        controlSum %= 10;
-        controlSum = 10 - controlSum;
-        controlSum %= 10;
-        return Character.getNumericValue(text.charAt(10)) == controlSum;
+    /**
+     * Checks the control sum of personal ID is given.
+     * @param pesel {@link String} value of personal ID.
+     * @return true if control sum is correct, false in other case.
+     */
+    private boolean controlSum(String pesel) {
+//        int[] numbers = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
+//        int controlSum = 0;
+//        for(int i = 0; i < 10; i++) {
+//            controlSum += (numbers[i] * Character.getNumericValue(text.charAt(i)));
+//        }
+//        controlSum %= 10;
+//        controlSum = 10 - controlSum;
+//        controlSum %= 10;
+//        return Character.getNumericValue(text.charAt(10)) == controlSum;
+        String result = HibernateUtil.getEm().createNativeQuery("SELECT pesel_control_sum(:pesel) FROM dual")
+                .setParameter("pesel", Long.valueOf(pesel)).getSingleResult().toString();
+        return result.equals("T");
     }
 
+    /**
+     * Select gender value using text with personal ID.
+     * @param text {@link String} with personal ID.
+     * @return "K" if it's woman or "M" if it's man.
+     */
     private String genderFromPesel(String text) {
         if(Character.getNumericValue(text.charAt(9))%2 == 0) {
             return "K";
         } else return "M";
     }
 
+    /**
+     * Checks if any {@link Competitor} has any {@link Record}.
+     * @param club {@link Club} from which {@link Competitor}s are checked.
+     * @return true if any of {@link Competitor}s has a {@link Record}, false in other case.
+     */
     private boolean someHaveRecords(Club club) {
         for(Competitor comp : club.getCompetitors()) {
             if(comp.getRecords().size() != 0) {
@@ -352,6 +480,11 @@ public class CompetitorController implements Initializable {
         return false;
     }
 
+    /**
+     * Checks if any {@link Competitor} takes part in any {@link Contest}.
+     * @param club {@link Club} from which {@link Competitor}s are checked.
+     * @return true if any of {@link Competitor}s takes part in any {@link Contest}, false in other case.
+     */
     private boolean someTakePartInContests(Club club) {
         for(Competitor comp : club.getCompetitors()) {
             if(comp.getContests().size() != 0) {

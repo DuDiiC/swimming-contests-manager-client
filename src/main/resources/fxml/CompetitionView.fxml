@@ -41,7 +41,7 @@
             <TableColumn fx:id="recordColumn" prefWidth="429.0" text="Najlepszy czas" />
         </columns>
       </TableView>
-      <Button fx:id="deleteCompetitionButton" mnemonicParsing="false" onAction="#removeCompetition" text="Usuń zaznaczoną" />
+      <Button fx:id="removeCompetitionButton" mnemonicParsing="false" onAction="#removeCompetition" text="Usuń zaznaczoną" />
       <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="20.0">
          <children>
             <Label text="Dodaj zaznaczoną do zawodów">

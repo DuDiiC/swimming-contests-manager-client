@@ -52,10 +52,10 @@
                <children>
                   <Label text="Klub" />
                   <ComboBox fx:id="clubComboBox2" onAction="#setCompetitors" prefWidth="150.0" />
-                  <Button fx:id="deleteAllCompetitorsFromClubButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Usuń wszystkich" />
+                  <Button fx:id="removeeAllCompetitorsFromClubButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Usuń wszystkich" />
                   <Label text="Zawodnik" />
                   <ComboBox fx:id="competitorComboBox" prefWidth="150.0" />
-                  <Button fx:id="deleteCompetitorButton" mnemonicParsing="false" onAction="#removeCompetitor" text="Usuń" />
+                  <Button fx:id="removeCompetitorButton" mnemonicParsing="false" onAction="#removeCompetitor" text="Usuń" />
                </children>
             </HBox>
          </children>
@@ -82,7 +82,7 @@
                   <Label text="Czas" />
                   <TextField fx:id="timeTextField" prefHeight="25.0" prefWidth="142.0" />
                   <Button fx:id="addRecordButton" mnemonicParsing="false" onAction="#addRecord" text="Dodaj" />
-                  <Button fx:id="deleteRecordButton" mnemonicParsing="false" onAction="#removeRecord" text="Usuń zaznaczony" />
+                  <Button fx:id="removeRecordButton" mnemonicParsing="false" onAction="#removeRecord" text="Usuń zaznaczony" />
                </children>
             </HBox>
          </children>

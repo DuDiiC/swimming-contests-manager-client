@@ -8,9 +8,7 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateUtilCompetitor {
-
-    private static EntityManager em = HibernateUtil.getEm();
+public class HibernateUtilCompetitor extends HibernateUtilAbstract {
 
     public static List<Competitor> getAll() {
         List competitorList = em.createQuery("FROM Competitor").getResultList();

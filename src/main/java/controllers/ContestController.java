@@ -28,41 +28,98 @@ import java.util.ResourceBundle;
  * TODO:
  * > dodac modyfikacje elementow w tabeli do: nazwy, miasta, daty
  */
+
+/**
+ * Controller class for {ContestView.fxml} file.
+ * Supports operations for {@link Contest} database table.
+ * That class implements {@link Initializable} interface used with controllers in JavaFX.
+ */
 public class ContestController implements Initializable {
 
+    /**
+     * {@link TextField} for contest's name.
+     */
     @FXML private TextField nameTextField;
 
+    /**
+     * {@link TextField} for contest's city.
+     */
     @FXML private TextField cityTextField;
 
+    /**
+     * {@link DatePicker} for contest's start date.
+     */
     @FXML private DatePicker dateField;
 
+    /**
+     * {@link Button} to add a new {@link Contest} object to the database.
+     */
     @FXML private Button addContestButton;
 
-    @FXML private Button deleteContestButton;
+    /**
+     * {@link Button} to remove the selected {@link Contest} from the database.
+     */
+    @FXML private Button removeContestButton;
 
+    /**
+     * {@link TableView} for {@link Contest} class objects.
+     */
     @FXML private TableView<Contest> contestTableView;
 
+    /**
+     * {@link TableColumn} with contest's name.
+     */
     @FXML private TableColumn<Contest, String> nameColumn;
 
+    /**
+     * {@link TableColumn} with contest's city.
+     */
     @FXML private TableColumn<Contest, String> cityColumn;
 
+    /**
+     * {@link TableColumn} with contest's start data information.
+     */
     @FXML private TableColumn<Contest, String> dateColumn;
 
+    /**
+     * {@link TableView} for {@link Competitor}s in selected {@link Contest}.
+     */
     @FXML private TableView<Competitor> competitorTableView;
 
+    /**
+     * {@link TableColumn} with competitor's information.
+     */
     @FXML private TableColumn<Competitor, String> competitorColumn;
 
-    @FXML private Button deleteCompetitorFromContestButton;
+    /**
+     * {@link Button} to remove selected {@link Competitor} from selected {@link Contest}.
+     */
+    @FXML private Button removeCompetitorFromContestButton;
 
-    @FXML private Button deleteAllCompetitorsFromContestButton;
+    /**
+     * {@link Button} to remove all {@link Competitor}s from selected {@link Contest}.
+     */
+    @FXML private Button removeAllCompetitorsFromContestButton;
 
+    /**
+     * {@link TableView} for {@link Competition}s in selected {@link Contest}.
+     */
     @FXML private TableView<Competition> competitionTableView;
 
+    /**
+     * {@link TableColumn} with competition's information.
+     */
     @FXML private TableColumn<Competition, String> competitionColumn;
 
-    @FXML private Button deleteCompetitionFromContestButton;
+    /**
+     * {@link Button} to remove selected {@link Competition} from selected {@link Contest}.
+     */
+    @FXML private Button removeCompetitionFromContestButton;
 
-    @FXML private Button deleteAllCompetitionsFromContestButton;
+    /**
+     * {@link Button} to remove all {@link Competition}s from selected {@link Contest}.
+     */
+    @FXML private Button removeAllCompetitionsFromContestButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -120,8 +177,12 @@ public class ContestController implements Initializable {
         competitionTableView.setPlaceholder(new Label("Nie ma konkurencji do wyswietlenia"));
     }
 
-    @FXML
-    private void addContest() {
+    /**
+     * Called after pressing the {@link ContestController#addContestButton} and adding new {@link Contest} to the database
+     * using values selected in {@link ContestController#nameTextField}, {@link ContestController#cityTextField} and
+     * {@link ContestController#dateField}.
+     */
+    @FXML private void addContest() {
         if(nameTextField.getText().isEmpty() || cityTextField.getText().isEmpty() || dateField.getEditor().getText().isEmpty()) {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowe zawody!");
             return;
@@ -153,8 +214,11 @@ public class ContestController implements Initializable {
         contestTableView.setItems(contestList);
     }
 
-    @FXML
-    private void removeContest() {
+    /**
+     * Called after pressing {@link ContestController#removeContestButton} and removing selected one from the database
+     * using selected item in {@link ContestController#contestTableView}.
+     */
+    @FXML private void removeContest() {
         // remove data from database
         if(contestTableView.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody do usunięcia!");
@@ -172,8 +236,11 @@ public class ContestController implements Initializable {
         contestTableView.setItems(contestList);
     }
 
-    @FXML
-    public void selectedInfo() {
+    /**
+     * Called after pressing {@link ContestController#contestTableView} and showing information about {@link Competitor}s
+     * and {@link Competition}s for selected {@link Contest}.
+     */
+    @FXML public void selectedInfo() {
         Contest contest = contestTableView.getSelectionModel().getSelectedItem();
         // competitorTableView
         ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
@@ -185,8 +252,11 @@ public class ContestController implements Initializable {
         competitionTableView.setItems(competitionList);
     }
 
-    @FXML
-    public void removeCompetitorFromContest() {
+    /**
+     * Called after pressing {@link ContestController#removeCompetitorFromContestButton} and removing correlations
+     * between selected {@link Contest} and selected {@link Competitor}.
+     */
+    @FXML public void removeCompetitorFromContest() {
         if(contestTableView.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć zawodnika!");
             return;
@@ -206,8 +276,11 @@ public class ContestController implements Initializable {
         selectedInfo();
     }
 
-    @FXML
-    private void removeAllCompetitorsFromContest() {
+    /**
+     * Calling after pressing {@link ContestController#removeAllCompetitorsFromContestButton} and removing correlations
+     * between selected {@link Contest} and all {@link Competitor}s.
+     */
+    @FXML private void removeAllCompetitorsFromContest() {
         if(contestTableView.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć zawodników!");
             return;
@@ -222,8 +295,11 @@ public class ContestController implements Initializable {
         selectedInfo();
     }
 
-    @FXML
-    private void removeCompetitionFromContest() {
+    /**
+     * Called after pressing {@link ContestController#removeCompetitionFromContestButton} and removing correlations
+     * between selected {@link Contest} and selected {@link Competition}.
+     */
+    @FXML private void removeCompetitionFromContest() {
         if(contestTableView.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć konkurencję!");
             return;
@@ -243,8 +319,11 @@ public class ContestController implements Initializable {
         selectedInfo();
     }
 
-    @FXML
-    private void removeAllCompetitionsFromContest() {
+    /**
+     * Calling after pressing {@link ContestController#removeAllCompetitionsFromContestButton} and removing correlations
+     * between selected {@link Contest} aand all {@link Competition}s.
+     */
+    @FXML private void removeAllCompetitionsFromContest() {
         if(contestTableView.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody, z których chcesz usunąć konkurencje!");
             return;

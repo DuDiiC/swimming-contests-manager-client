@@ -1,10 +1,15 @@
 package dbModels;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "COMPETITOR")
 public class Competitor implements Serializable {
@@ -35,66 +40,7 @@ public class Competitor implements Serializable {
     @ManyToMany(mappedBy = "competitors")
     private List<Contest> contests = new ArrayList<>();
 
-    public Competitor() {
-    }
-
     public String toString() {
         return name + " " + surname;
-    }
-
-    public long getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(long pesel) {
-        this.pesel = pesel;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Club getClub() {
-        return club;
-    }
-
-    public void setClub(Club club) {
-        this.club = club;
-    }
-
-    public List<Record> getRecords() {
-        return records;
-    }
-
-    public void setRecords(List<Record> records) {
-        this.records = records;
-    }
-
-    public List<Contest> getContests() {
-        return contests;
-    }
-
-    public void setContests(List<Contest> contests) {
-        this.contests = contests;
     }
 }

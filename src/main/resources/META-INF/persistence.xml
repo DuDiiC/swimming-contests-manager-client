@@ -8,6 +8,8 @@
         <properties>
         <!-- Configuring JDBC properties -->
         <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@oraas:1521:ora2018" />
+        <property name="javax.persistence.jdbc.user" value="" />
+        <property name="javax.persistence.jdbc.password" value="" />
         <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
 
         <!-- Hibernate properties -->

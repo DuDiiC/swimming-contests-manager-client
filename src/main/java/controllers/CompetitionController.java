@@ -18,30 +18,71 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Controller class for {CompetitionView.fxml} file.
+ * Supports operations for {@link Competition} database table.
+ * That class implements {@link Initializable} interface used with controllers in JavaFX.
+ */
 public class CompetitionController implements Initializable {
 
+    /**
+     * {@link ComboBox} for competition's style.
+     */
     @FXML private ComboBox<String> styleComboBox;
 
+    /**
+     * {@link TextField} for competition's distance.
+     */
     @FXML private TextField distanceTextField;
 
+    /**
+     * {@link ChoiceBox} for competition's gender.
+     */
     @FXML private ChoiceBox<String> genderComboBox;
 
+    /**
+     * {@link Button} to add a new {@link Competition} object to the database.
+     */
     @FXML private Button addCompetitionButton;
 
+    /**
+     * {@link TableView} for {@link Competition} class objects.
+     */
     @FXML private TableView<Competition> competitionTableView;
 
+    /**
+     * {@link TableColumn} with competition's style.
+     */
     @FXML private TableColumn<Competition, String> styleColumn;
 
+    /**
+     * {@link TableColumn} with competition's distance.
+     */
     @FXML private TableColumn<Competition, Integer> distanceColumn;
 
+    /**
+     * {@link TableColumn} with competition's gender.
+     */
     @FXML private TableColumn<Competition, String> genderColumn;
 
+    /**
+     * {@link TableColumn} with competition's record in format m m : s s : ms ms.
+     */
     @FXML private TableColumn<Competition, String> recordColumn;
 
-    @FXML private Button deleteCompetitionButton;
+    /**
+     * {@link Button} to remove the selected {@link Competition} object from the database.
+     */
+    @FXML private Button removeCompetitionButton;
 
+    /**
+     * {@link ComboBox} to select {@link Contest} object.
+     */
     @FXML private ComboBox<Contest> contestComboBox;
 
+    /**
+     * {@link Button} to add a relation between selected {@link Competition} and {@link Contest}.
+     */
     @FXML private Button addCompetitionToContestButton;
 
     @Override
@@ -88,6 +129,11 @@ public class CompetitionController implements Initializable {
         contestComboBox.setItems(contestList);
     }
 
+    /**
+     * Called after pressing the {@link CompetitionController#addCompetitionButton} and adding {@link Competition} to the
+     * database using values selected in {@link CompetitionController#styleComboBox}, {@link CompetitionController#distanceTextField}
+     * and {@link CompetitionController#genderComboBox}.
+     */
     @FXML
     public void addCompetition() {
         if(styleComboBox.getSelectionModel().isEmpty() || distanceTextField.getText().isEmpty() || genderComboBox.getSelectionModel().isEmpty()) {
@@ -121,6 +167,10 @@ public class CompetitionController implements Initializable {
         competitionTableView.setItems(getCompetition());
     }
 
+    /**
+     * Called after pressing {@link CompetitionController#removeCompetitionButton} and removing selected one from the
+     * database using selected item in {@link CompetitionController#competitionTableView}.
+     */
     @FXML
     public void removeCompetition() {
         if(competitionTableView.getSelectionModel().isEmpty()) {
@@ -141,6 +191,10 @@ public class CompetitionController implements Initializable {
         competitionTableView.setItems(getCompetition());
     }
 
+    /**
+     * Called after pressing {@link CompetitionController#addCompetitionToContestButton} and adding relation
+     * between selected {@link Competition} and {@link Contest}.
+     */
     @FXML
     public void addCompetitionToContest() {
         // add data to database
@@ -170,12 +224,21 @@ public class CompetitionController implements Initializable {
         contestComboBox.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Retrieves information about all {@link Competition} class objects from the database.
+     * @return {@link ObservableList} with all {@link Competition}s from the database.
+     */
     private ObservableList<Competition> getCompetition() {
         ObservableList<Competition> competitionList = FXCollections.observableArrayList();
         competitionList.addAll(HibernateUtilCompetition.getAll());
         return competitionList;
     }
 
+    /**
+     * Chooses the best {@link Record} of given{@link Competition}.
+     * @param competition   {@link Competition} for which the best {@link Record} is given.
+     * @return the best {@link Record} correlated with given {@link Competition}.
+     */
     private static Record getBestRecord(Competition competition) {
         List<Record> recordList = HibernateUtilCompetition.getAllRecords(competition);
         if(recordList.size() == 0) {

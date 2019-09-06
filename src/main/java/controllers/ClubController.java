@@ -20,28 +20,66 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for {ClubView.fxml} file.
+ * Supports operations for {@link Club} database table.
+ * That class implements {@link Initializable} interface used with controllers in JavaFX.
+ */
 public class ClubController implements Initializable {
 
+    /**
+     * {@link TextField} for club's name.
+     */
     @FXML private TextField nameTextField;
 
+    /**
+     * {@link TextField} for club's city.
+     */
     @FXML private TextField cityTextField;
 
+    /**
+     * {@link Button} to add a new {@link Club} object to the database.
+     */
     @FXML private Button addClubButton;
 
+    /**
+     * {@link TableView} for {@link Club} class objects.
+     */
     @FXML private TableView<Club> clubTableView;
 
+    /**
+     * {@link TableColumn} with club's name.
+     */
     @FXML private TableColumn<Club, String> nameColumn;
 
+    /**
+     * {@link TableColumn} with club's city.
+     */
     @FXML private TableColumn<Club, String> cityColumn;
 
-    @FXML private Button deleteClubButton;
+    /**
+     * {@link Button} to remove the selected {@link Club} object from the database.
+     */
+    @FXML private Button removeClubButton;
 
+    /**
+     * {@link TableView} for {@link Trainer} class objects.
+     */
     @FXML private TableView<Trainer> trainerTableView;
 
+    /**
+     * {@link TableColumn} with {@link String} represents information about {@link Trainer} class object.
+     */
     @FXML private TableColumn<Trainer, String> trainerColumn;
 
+    /**
+     * {@link TableView} for {@link Competitor} class objects.
+     */
     @FXML private TableView<Competitor> competitorTableView;
 
+    /**
+     * {@link TableColumn} with {@link String} represents information about {@link Competitor} class object.
+     */
     @FXML private TableColumn<Competitor, String> competitorColumn;
 
     @Override
@@ -98,6 +136,10 @@ public class ClubController implements Initializable {
                 param.getValue().getName() + " " + param.getValue().getSurname()));
     }
 
+    /**
+     * Called after pressing the {@link ClubController#addClubButton} and adding new {@link Club} to the database
+     * using values selected in {@link ClubController#nameTextField} and {@link ClubController#cityTextField}.
+     */
     @FXML
     public void addClub() {
         // add data to database
@@ -124,6 +166,10 @@ public class ClubController implements Initializable {
         clubTableView.setItems(clubList);
     }
 
+    /**
+     * Called after pressing {@link ClubController#removeClubButton} and removing selected one from the database,
+     * using selected item in {@link ClubController#clubTableView}.
+     */
     @FXML
     public void removeClub() {
         if(clubTableView.getSelectionModel().isEmpty()) {
@@ -146,6 +192,10 @@ public class ClubController implements Initializable {
         clubTableView.setItems(clubList);
     }
 
+    /**
+     * Called after pressing {@link ClubController#clubTableView} and showing information about {@link Trainer}s
+     * and {@link Competitor}s for selected {@link Club}.
+     */
     @FXML
     public void selectedInfo() {
         Club club = clubTableView.getSelectionModel().getSelectedItem();
@@ -159,6 +209,10 @@ public class ClubController implements Initializable {
         competitorTableView.setItems(competitorList);
     }
 
+    /**
+     * Retrieves information about all {@link Club} class objects from the database.
+     * @return {@link ObservableList} with all {@link Club}s from the database.
+     */
     private ObservableList<Club> getClub() {
         ObservableList<Club> clubList = FXCollections.observableArrayList();
         clubList.addAll(HibernateUtilClub.getAll());

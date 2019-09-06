@@ -1,0 +1,22 @@
+.dialog-pane {
+    -fx-background-color: #09344B;
+    -fx-light-text-color: rgb(180, 220, 220);
+    -fx-mid-text-color: rgb(20, 20, 20);
+    -fx-dark-text-color: rgb(00, 00, 00);
+}
+.dialog-pane > *.button-bar > *.container{
+    -fx-background-color: #09344B;
+}
+.dialog-pane > *.label.content{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.dialog-pane:header *.header-panel{
+    -fx-background-color: #09344B;
+}
+.dialog-pane:header *.header-panel *.label{
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-fill: #09344B;
+}
+

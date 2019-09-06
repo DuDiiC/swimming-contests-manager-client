@@ -8,9 +8,7 @@ import fxUtils.DialogsUtil;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class HibernateUtilRecord {
-
-    private static EntityManager em = HibernateUtil.getEm();
+public class HibernateUtilRecord extends HibernateUtilAbstract {
 
     public static boolean addRecord(Record record) {
         List<Record> rList = HibernateUtilCompetitor.getAllRecords(record.getCompetitor());

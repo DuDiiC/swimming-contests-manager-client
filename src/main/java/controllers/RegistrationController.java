@@ -18,21 +18,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for {RegistrationView.fxml} file.
+ * Supports operations for registration {@link Competitor}s on {@link Contest}s.
+ * That class implements @link Initializable interface used with controllers in JavaFX.
+ */
 public class RegistrationController implements Initializable {
 
+    /**
+     * {@link ComboBox} to select {@link Contest} object.
+     */
     @FXML private ComboBox<Contest> contestComboBox;
 
+    /**
+     * {@link ComboBox} to select {@link Club} object.
+     */
     @FXML private ComboBox<Club> clubComboBox;
 
+    /**
+     * {@link Button} to add correlation between all {@link Competitor}s from selected {@link Club}
+     * and the selected {@link Contest}.
+     */
     @FXML private Button addAllCompetitorsButton;
 
-    @FXML private Button deleteAllCompetitorsButton;
+    /**
+     * {@link Button} to remove correlation between all {@link Competitor}s from selected {@link Club}
+     * and the selected {@link Contest}.
+     */
+    @FXML private Button removeAllCompetitorsButton;
 
+    /**
+     * {@link ComboBox} to select {@link Competitor} object from selected {@link Club}.
+     */
     @FXML private ComboBox<Competitor> competitorComboBox;
 
+    /**
+     * {@link Button} to add correlation between selected {@link Competitor} and selected {@link Contest}.
+     */
     @FXML private Button addCompetitorButton;
 
-    @FXML private Button deleteCompetitorButton;
+    /**
+     * {@link Button} to remove correlation betweend selected {@link Competitor} and selected {@link Contest}.
+     */
+    @FXML private Button removeCompetitorButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -48,8 +76,11 @@ public class RegistrationController implements Initializable {
         clubComboBox.setItems(clubList);
     }
 
-    @FXML
-    public void showCompetitors() {
+    /**
+     * Called after selecting the {@link RegistrationController#clubComboBox} and showing all {@link Competitor}s
+     * from selected {@link Club}.
+     */
+    @FXML public void showCompetitors() {
         Club club = clubComboBox.getSelectionModel().getSelectedItem();
         if(club != null) {
             ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
@@ -58,8 +89,11 @@ public class RegistrationController implements Initializable {
         }
     }
 
-    @FXML
-    public void addAllCompetitorsFromClub() {
+    /**
+     * Called after pressing the {@link RegistrationController#addAllCompetitorsButton} and adding correlation between
+     * selected {@link Contest} and all {@link Competitor}s from selected {@link Club}.
+     */
+    @FXML public void addAllCompetitorsFromClub() {
         if(contestComboBox.getSelectionModel().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody i klub do zapisania zawodników!");
             return;
@@ -88,8 +122,11 @@ public class RegistrationController implements Initializable {
 
     }
 
-    @FXML
-    public void removeAllCompetitorsFromClub() {
+    /**
+     * Called after pressing the {@link RegistrationController#removeAllCompetitorsButton} and removing correlation
+     * between selected {@link Contest} and all {@link Competitor}s from selected {@link Club}.
+     */
+    @FXML public void removeAllCompetitorsFromClub() {
         if(contestComboBox.getSelectionModel().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawody i klub do wypisania zawodników!");
             return;
@@ -113,8 +150,11 @@ public class RegistrationController implements Initializable {
         cleaningAfterRegistration();
     }
 
-    @FXML
-    public void addCompetitor() {
+    /**
+     * Called after pressing the {@link RegistrationController#addCompetitorButton} and adding correlation between
+     * selected {@link Contest} and selected {@link Competitor}.
+     */
+    @FXML public void addCompetitor() {
         if(contestComboBox.getSelectionModel().isEmpty() || competitorComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawodnika do zapisania na zawody!");
             return;
@@ -141,8 +181,11 @@ public class RegistrationController implements Initializable {
 
     }
 
-    @FXML
-    public void removeCompetitor() {
+    /**
+     * Called after pressing the {@link RegistrationController#removeCompetitorButton} between selected {@link Contest}
+     * and selected {@link Competitor}.
+     */
+    @FXML public void removeCompetitor() {
         if(contestComboBox.getSelectionModel().isEmpty() || competitorComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz zawodnika do wypisania z zawodów!");
             return;
@@ -169,6 +212,9 @@ public class RegistrationController implements Initializable {
         cleaningAfterRegistration();
     }
 
+    /**
+     * Clears all JavaFX elements after registration.
+     */
     private void cleaningAfterRegistration() {
         clubComboBox.getSelectionModel().clearSelection();
         competitorComboBox.getSelectionModel().clearSelection();

@@ -6,9 +6,7 @@ import dbModels.Record;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class HibernateUtilCompetition {
-
-    private static EntityManager em = HibernateUtil.getEm();
+public class HibernateUtilCompetition extends HibernateUtilAbstract {
 
     public static List<Competition> getAll() {
         List competitionList = em.createQuery("FROM Competition").getResultList();

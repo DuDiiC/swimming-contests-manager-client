@@ -53,13 +53,22 @@
             <version>1.0.0.Final</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc8</artifactId>
             <version>12.2.0.1</version>
             <scope>system</scope>
             <systemPath>
-                C:/Users/macie/Downloads/ojdbc8.jar
+                D:/Maciej Dudek/Documents/Studia/Rok II/II semestr/Projekt bazodanowy/ojdbc8.jar
             </systemPath>
         </dependency>
 

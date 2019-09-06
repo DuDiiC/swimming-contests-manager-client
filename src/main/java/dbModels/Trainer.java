@@ -1,8 +1,13 @@
 package dbModels;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "TRAINER")
 @SequenceGenerator(name = "generate_trainer_id", sequenceName = "generate_trainer_id", allocationSize = 1)
@@ -24,43 +29,8 @@ public class Trainer implements Serializable {
     @JoinColumn(name = "CLUB_CLUB_ID", nullable = false)
     private Club club;
 
-    public Trainer() {
-    }
-
     @Override
     public String toString() {
         return name + " " + surname;
-    }
-
-    public long getLicenceNr() {
-        return licenceNr;
-    }
-
-    public void setLicenceNr(long licenceNr) {
-        this.licenceNr = licenceNr;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Club getClub() {
-        return club;
-    }
-
-    public void setClub(Club club) {
-        this.club = club;
     }
 }

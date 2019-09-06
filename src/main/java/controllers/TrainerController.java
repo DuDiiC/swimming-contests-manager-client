@@ -20,30 +20,71 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for {TrainerView.fxml} file.
+ * Supports operations for {@link Trainer} database table.
+ * That class impements {@link Initializable} interface used with controllers in JavaFX.
+ */
 public class TrainerController implements Initializable {
 
+    /**
+     * {@link TextField} for trainer's name.
+     */
     @FXML private TextField nameTextField;
 
+    /**
+     * {@link TextField} for trainer's surname.
+     */
     @FXML private TextField surnameTextField;
 
+    /**
+     * {@link ComboBox} to select {@link Club} object.
+     */
     @FXML private ComboBox<Club> clubComboBox;
 
+    /**
+     * {@link Button} to add a new {@link Trainer} object to the database.
+     */
     @FXML private Button addTrainerButton;
 
+    /**
+     * {@link ComboBox} to select {@link Club} object.
+     */
     @FXML private ComboBox<Club> clubComboBox2;
 
+    /**
+     * {@link ComboBox} to select {@link Trainer} object.
+     */
     @FXML private ComboBox<Trainer> trainerComboBox;
 
-    @FXML private Button deleteTrainerButton;
+    /**
+     * {@link Button} to remove selected {@link Trainer}.
+     */
+    @FXML private Button removeTrainerButton;
 
+    /**
+     * {@link TableView} for {@link Trainer} class objects.
+     */
     @FXML private TableView<Trainer> trainerTableView;
 
+    /**
+     * {@link TableColumn} with trainer's licence number.
+     */
     @FXML private TableColumn<Trainer, Integer> licenceNrColumn;
 
+    /**
+     * {@link TableColumn} with trainer's name.
+     */
     @FXML private TableColumn<Trainer, String> nameColumn;
 
+    /**
+     * {@link TableColumn} with trainer's surname.
+     */
     @FXML private TableColumn<Trainer, String> surnameColumn;
 
+    /**
+     * {@link TableColumn} with trainer's club information.
+     */
     @FXML private TableColumn<Trainer, String> clubColumn;
 
     @Override
@@ -91,8 +132,12 @@ public class TrainerController implements Initializable {
         });
     }
 
-    @FXML
-    public void addTrainer() {
+    /**
+     * Called after pressing {@link TrainerController#addTrainerButton} and adding new {@link Trainer} to
+     * the database using values selected in {@link TrainerController#nameTextField},
+     * {@link TrainerController#surnameTextField} and {@link TrainerController#clubComboBox}.
+     */
+    @FXML public void addTrainer() {
         // add data to database
         if(nameTextField.getText().isEmpty() || surnameTextField.getText().isEmpty() || clubComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wypełnij wszystkie pola formularza, aby dodać nowego trenera!");
@@ -128,8 +173,12 @@ public class TrainerController implements Initializable {
         trainerTableView.setItems(trainerList);
     }
 
-    @FXML
-    public void removeTrainer() {
+    /**
+     * Called after pressing the {@link TrainerController} and removing selected one from
+     * the database using selected items in {@link TrainerController#clubComboBox2} and
+     * {@link TrainerController#trainerComboBox}.
+     */
+    @FXML public void removeTrainer() {
         // remove data from database
         if(clubComboBox2.getSelectionModel().isEmpty() || trainerComboBox.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz do usunięcia trenera z określonego klubu!");
@@ -147,8 +196,11 @@ public class TrainerController implements Initializable {
         trainerTableView.setItems(trainerList);
     }
 
-    @FXML
-    public void setTrainers() {
+    /**
+     * Called after select item in {@link TrainerController#clubComboBox2} and sets {@link Trainer}s
+     * in {@link TrainerController#trainerComboBox}.
+     */
+    @FXML public void setTrainers() {
         Club club = clubComboBox2.getSelectionModel().getSelectedItem();
         if(club != null) {
             ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
@@ -158,12 +210,19 @@ public class TrainerController implements Initializable {
         }
     }
 
+    /**
+     * Retrieves information about all {@link Trainer} class objects from the database.
+     * @return {@link ObservableList} with all {@link Trainer}s from the database.
+     */
     private ObservableList<Trainer> getTrainer() {
         ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
         trainerList.addAll(HibernateUtilTrainer.getAll());
         return trainerList;
     }
 
+    /**
+     * Sets properties for {@link TrainerController#trainerTableView}.
+     */
     private void setPropertiesForTrainerTableView() {
         licenceNrColumn.setCellValueFactory(new PropertyValueFactory<>("licenceNr"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));

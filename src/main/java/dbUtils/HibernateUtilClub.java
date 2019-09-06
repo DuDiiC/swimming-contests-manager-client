@@ -7,9 +7,7 @@ import dbModels.Trainer;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class HibernateUtilClub {
-
-    private static EntityManager em = HibernateUtil.getEm();
+public class HibernateUtilClub extends HibernateUtilAbstract {
 
     public static List<Club> getAll() {
         List clubList = em.createQuery("FROM Club").getResultList();

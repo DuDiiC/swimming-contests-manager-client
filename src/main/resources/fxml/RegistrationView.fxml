@@ -21,14 +21,14 @@
             <Label text="Klub" />
             <ComboBox fx:id="clubComboBox" onAction="#showCompetitors" prefWidth="150.0" />
             <Button fx:id="addAllCompetitorsButton" mnemonicParsing="false" onAction="#addAllCompetitorsFromClub" text="Zapisz wszystkich" />
-            <Button fx:id="deleteAllCompetitorsButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Wypisz wszystkich" />
+            <Button fx:id="removeAllCompetitorsButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Wypisz wszystkich" />
          </children></HBox>
       <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="20.0">
          <children>
             <Label text="Zawodnik" />
             <ComboBox fx:id="competitorComboBox" prefWidth="150.0" />
             <Button fx:id="addCompetitorButton" mnemonicParsing="false" onAction="#addCompetitor" text="Zapisz" />
-            <Button fx:id="deleteCompetitorButton" mnemonicParsing="false" onAction="#removeCompetitor" text="Wypisz" />
+            <Button fx:id="removeCompetitorButton" mnemonicParsing="false" onAction="#removeCompetitor" text="Wypisz" />
          </children>
       </HBox>
    </children>

@@ -10,6 +10,8 @@
         <property name="dialect">org.hibernate.dialect.Oracle12cDialect</property>
 
         <!-- about user -->
+        <property name="connection.username"></property>
+        <property name="connection.password"></property>
 
 <!--        <property name="connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property>-->
         <property name="hibernate.c3p0.acquire_increment">1</property>

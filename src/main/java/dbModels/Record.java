@@ -1,8 +1,13 @@
 package dbModels;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "RECORD")
 @SequenceGenerator(name = "generate_record_id", sequenceName = "generate_record_id", allocationSize = 1)
@@ -32,9 +37,6 @@ public class Record implements Serializable, Comparable<Record> {
     @JoinColumn(name = "COMPETITION_COMPETITION_ID", nullable = false)
     private Competition competition;
 
-    public Record() {
-    }
-
     @Override
     public String toString() {
         String time = "";
@@ -63,60 +65,12 @@ public class Record implements Serializable, Comparable<Record> {
         return time;
     }
 
-    public Long getRecordId() {
-        return recordId;
-    }
-
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
-    }
-
-    public Integer getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(Integer minutes) {
-        this.minutes = minutes;
-    }
-
-    public Integer getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(Integer seconds) {
-        this.seconds = seconds;
-    }
-
-    public Integer getHundredth() {
-        return hundredth;
-    }
-
-    public void setHundredth(Integer hundredth) {
-        this.hundredth = hundredth;
-    }
-
-    public Competitor getCompetitor() {
-        return competitor;
-    }
-
-    public void setCompetitor(Competitor competitor) {
-        this.competitor = competitor;
-    }
-
-    public Competition getCompetition() {
-        return competition;
-    }
-
-    public void setCompetition(Competition competition) {
-        this.competition = competition;
-    }
-
-    @Override
     /**
      * Jesli jest dodatnie to nowy czas jest wolniejszy, jesli ujemne, to nowy czas jest szybszy, jesli rowne to sa takie same
      * this 00:30:30
      * o    00:30:12
      */
+    @Override
     public int compareTo(Record o) {
         int thisWholeSeconds = this.minutes*60 + this.seconds;
         int oWholeSeconds = o.getMinutes()*60 + o.getSeconds();
