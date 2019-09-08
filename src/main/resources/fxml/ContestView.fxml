@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="877.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContestController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="877.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxControllers.ContestController">
    <children>
       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
          <children>
@@ -39,11 +39,11 @@
                </children></HBox>
          </children>
       </VBox>
-      <TableView fx:id="contestTableView" onMouseClicked="#selectedInfo" prefHeight="200.0" prefWidth="800.0">
+      <TableView fx:id="contestTableView" onMouseClicked="#setCompetitionsAndCompetitorsForSelectedContest" prefHeight="200.0" prefWidth="800.0">
         <columns>
-          <TableColumn fx:id="nameColumn" prefWidth="328.0" text="Nazwa" />
-          <TableColumn fx:id="cityColumn" prefWidth="308.0" text="Miasto" />
-            <TableColumn fx:id="dateColumn" prefWidth="236.0" text="Data" />
+          <TableColumn fx:id="nameColumn" prefWidth="489.00001525878906" text="Nazwa" />
+          <TableColumn fx:id="cityColumn" prefWidth="214.0" text="Miasto" />
+            <TableColumn fx:id="dateColumn" prefWidth="170.0" text="Data" />
         </columns>
       </TableView>
       <Button fx:id="removeContestButton" mnemonicParsing="false" onAction="#removeContest" text="Usuń zaznaczone" />

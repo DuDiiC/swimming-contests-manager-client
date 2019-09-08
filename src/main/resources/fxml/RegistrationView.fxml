@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RegistrationController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxControllers.RegistrationController">
    <children>
       <Label text="Zapisy na zawody">
          <font>
@@ -19,7 +19,7 @@
             <Label text="Zawody" />
             <ComboBox fx:id="contestComboBox" prefWidth="150.0" />
             <Label text="Klub" />
-            <ComboBox fx:id="clubComboBox" onAction="#showCompetitors" prefWidth="150.0" />
+            <ComboBox fx:id="clubComboBox" onAction="#setCompetitorsForSelectedClub" prefWidth="150.0" />
             <Button fx:id="addAllCompetitorsButton" mnemonicParsing="false" onAction="#addAllCompetitorsFromClub" text="Zapisz wszystkich" />
             <Button fx:id="removeAllCompetitorsButton" mnemonicParsing="false" onAction="#removeAllCompetitorsFromClub" text="Wypisz wszystkich" />
          </children></HBox>

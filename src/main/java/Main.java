@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
 public class Main extends Application {
 
     public static void main(String[] args) {
@@ -18,10 +19,8 @@ public class Main extends Application {
         BorderPane borderPane = loader.load();
         Scene scene = new Scene(borderPane);
 
-//        scene.getStylesheets().add(getClass().getResource("/styles/dark_mode.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("/styles/mainCSS.css").toExternalForm());
         // set theme
-        //Application.setUserAgentStylesheet(STYLESHEET_CASPIAN);
+        scene.getStylesheets().add(getClass().getResource("/styles/mainCSS.css").toExternalForm());
 
         // show app
         primaryStage.initStyle(StageStyle.UNDECORATED);

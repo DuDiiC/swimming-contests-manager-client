@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClubController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxControllers.ClubController">
    <children>
       <VBox alignment="CENTER" prefHeight="103.0" prefWidth="800.0" spacing="10.0">
          <children>
@@ -31,7 +31,7 @@
             </HBox>
          </children>
       </VBox>
-      <TableView fx:id="clubTableView" onMouseClicked="#selectedInfo" prefHeight="218.0" prefWidth="800.0">
+      <TableView fx:id="clubTableView" onMouseClicked="#setCompetitorsAndTrainersFromSelectedClub" prefHeight="218.0" prefWidth="800.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="399.0" text="Nazwa klubu" />
           <TableColumn fx:id="cityColumn" minWidth="0.0" prefWidth="397.0" text="Miasto" />
