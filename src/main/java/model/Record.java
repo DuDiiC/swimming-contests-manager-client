@@ -51,11 +51,10 @@ public class Record implements Comparable<Record> {
 
     }
 
-    // TODO: NAPRAWIC
     @Override
     public int compareTo(Record o) {
-        Double left = (this.minutes.doubleValue() * 60.0) + this.seconds.doubleValue() + (this.hundredths.doubleValue() / 100.0);
-        Double right = (o.minutes.doubleValue() * 60.0) + this.seconds.doubleValue() + (o.hundredths.doubleValue() / 100.0);
+        double left = (this.minutes.doubleValue() * 60.0) + this.seconds.doubleValue() + (this.hundredths.doubleValue() / 100.0);
+        double right = (o.minutes.doubleValue() * 60.0) + this.seconds.doubleValue() + (o.hundredths.doubleValue() / 100.0);
         return Double.compare(left, right);
     }
 }

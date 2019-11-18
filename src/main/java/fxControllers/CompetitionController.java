@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * Controller class for {CompetitionView.fxml} file.
@@ -155,9 +156,8 @@ public class CompetitionController implements Initializable {
      * Called after pressing {@link CompetitionController#addCompetitionToContestButton} and adding relation
      * between selected {@link Competition} and {@link Contest}.
      */
-    @FXML public void addCompetitionToContest() {
+    @FXML public void addCompetitionToContest() throws IOException {
 
-        // TODO: DOPISAC PO NAPRAWIENIU PROBLEMU Z WYSWIETLANIEM ZAWODOW
         // validate wrong data
         if(competitionTableView.getSelectionModel().isEmpty()) {
             DialogsUtil.errorDialog("Wybierz konkurecję do dopisania do zawodów!");
@@ -168,23 +168,49 @@ public class CompetitionController implements Initializable {
         }
 
         // add competition to contest
-//        Contest contest = contestComboBox.getSelectionModel().getSelectedItem();
-//        Competition competition = competitionTableView.getSelectionModel().getSelectedItem();
-//        for(Competition c : contest.getCompetitions()) {
-//            if(c.getCompetitionId() == competition.getCompetitionId()) {
-//                DialogsUtil.errorDialog("Ta konkurencja jest już przypisana do wybranych zawodów!");
-//                return;
-//            }
-//        }
-//        List<Competition> cL = contest.getCompetitions();
-//        cL.add(competition);
-//        contest.setCompetitions(cL);
-//
-//        HibernateUtilContest.addOrRemoveCompetition(contest);
-//
-//        // clearing
-//        competitionTableView.getSelectionModel().clearSelection();
-//        contestComboBox.getSelectionModel().clearSelection();
+        Contest selectedContest = contestComboBox.getSelectionModel().getSelectedItem();
+        Competition selectedCompetition = competitionTableView.getSelectionModel().getSelectedItem();
+
+        Set<Competition> competitionFromContestSet = selectedContest.getCompetitions();
+        if(competitionFromContestSet.contains(selectedCompetition)) {
+            DialogsUtil.errorDialog("Ta konkurencja jest już dodana do tych zawodów!");
+            contestComboBox.getSelectionModel().getSelectedItem();
+            return;
+        }
+        competitionFromContestSet.add(selectedCompetition);
+        selectedContest.setCompetitions(competitionFromContestSet);
+
+        // update
+        contestsConverter.update(selectedContest);
+
+        // clearing
+        competitionTableView.getSelectionModel().clearSelection();
+        contestComboBox.getSelectionModel().clearSelection();
+    }
+
+    /**
+     * Called after pressing {@link CompetitionController#addAllCompetitionsToContestButton} and adding relation
+     * between all {@link Competition}s and selected {@link Contest}.
+     */
+    @FXML public void addAllCompetitionsToContest() throws IOException {
+
+        // validate wrong data
+        if(contestComboBox.getSelectionModel().isEmpty()) {
+            DialogsUtil.errorDialog("Wybierz zawody, do których chces zapisać konkurecję!");
+            return;
+        }
+
+        // add competitions to contest
+        Contest selectedContest = contestComboBox.getValue();
+        List<Competition> competitionBaseList = competitionsConverter.getAll();
+
+        selectedContest.getCompetitions().addAll(competitionBaseList);
+
+        // update
+        contestsConverter.update(selectedContest);
+
+        contestComboBox.getSelectionModel().clearSelection();
+
     }
 
     /**
@@ -196,18 +222,14 @@ public class CompetitionController implements Initializable {
         distanceColumn.setCellValueFactory(new PropertyValueFactory<>("distance"));
         genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
         recordColumn.setCellValueFactory(param -> {
-            try {
-                Record record = recordsConverter.getBestByCompetition(param.getValue().getId());
-                if(record.toString().equals("")) {
-                    return new SimpleStringProperty("brak rekordu");
-                }
-                return new SimpleStringProperty(record.toString() + " (" + record.getCompetitor().toString()
-                        + " - " + record.getCompetitor().getClub().toString() +")");
-            } catch (NullPointerException e) {
-                return null;
-            } catch (IOException e) {
-                return null;
+
+            Record record = recordsConverter.getBestByCompetition(param.getValue().getId());
+            if (record == null) {
+                return new SimpleStringProperty("brak rekordu");
             }
+            return new SimpleStringProperty(record.toString() + " (" + record.getCompetitor().toString()
+                    + " - " + record.getCompetitor().getClub().toString() + ")");
+
         });
     }
 
@@ -315,6 +337,11 @@ public class CompetitionController implements Initializable {
      * {@link Button} to add a relation between selected {@link Competition} and {@link Contest}.
      */
     @FXML private Button addCompetitionToContestButton;
+
+    /**
+     * {@link Button} to add a relation between all {@link Competition}s and selected {@link Contest}.
+     */
+    @FXML private Button addAllCompetitionsToContestButton;
 
     private CompetitionsConverter competitionsConverter = new CompetitionsConverter();
     private ContestsConverter contestsConverter = new ContestsConverter();

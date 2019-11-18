@@ -70,11 +70,17 @@ public class RecordsConverter {
     /**
      * Corresponds to the method {@link RecordsAccessor#getBestByCompetition(Long)}.
      */
-    public Record getBestByCompetition(Long competitionId) throws IOException {
-        return recordsAccessor.getBestByCompetition(competitionId)
-                .execute()
-                .body()
-                .unwrap();
+    public Record getBestByCompetition(Long competitionId) {
+        try {
+            return recordsAccessor.getBestByCompetition(competitionId)
+                    .execute()
+                    .body()
+                    .unwrap();
+        } catch (Exception e) {
+            return null;
+        }
+
+
     }
 
     /**

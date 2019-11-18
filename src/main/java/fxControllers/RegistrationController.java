@@ -16,6 +16,7 @@ import model.Contest;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -60,7 +61,7 @@ public class RegistrationController implements Initializable {
     @FXML public void setCompetitorsForSelectedClub() throws IOException {
         Club club = clubComboBox.getSelectionModel().getSelectedItem();
         ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
-        List<Competitor> competitorBaseList = competitorsConverter.getAllByClub(club.getId());
+        List<Competitor> competitorBaseList = (club != null) ? competitorsConverter.getAllByClub(club.getId()) : new ArrayList<>();
         competitorList.setAll(competitorBaseList);
         competitorComboBox.setItems(competitorList);
     }
@@ -83,12 +84,9 @@ public class RegistrationController implements Initializable {
 
         List<Competitor> competitorFromSelectedClubList = competitorsConverter.getAllByClub(selectedClub.getId());
         Set<Competitor> allCompetitorSet = selectedContest.getCompetitors();
-//        System.out.println(allCompetitorSet.size());
         allCompetitorSet.addAll(competitorFromSelectedClubList);
-//        System.out.println(allCompetitorSet.size());
         selectedContest.setCompetitors(allCompetitorSet);
 
-        // TODO: NIE DZIALA
         // update
         contestsConverter.update(selectedContest);
 
@@ -114,12 +112,9 @@ public class RegistrationController implements Initializable {
 
         List<Competitor> competitorFromSelectedClubList = competitorsConverter.getAllByClub(selectedClub.getId());
         Set<Competitor> allCompetitorSet = selectedContest.getCompetitors();
-//        System.out.println(allCompetitorSet.size());
         allCompetitorSet.removeAll(competitorFromSelectedClubList);
-//        System.out.println(allCompetitorSet.size());
         selectedContest.setCompetitors(allCompetitorSet);
 
-        // TODO: NIE DZIALA
         // update
         contestsConverter.update(selectedContest);
 
@@ -152,7 +147,6 @@ public class RegistrationController implements Initializable {
         allCompetitorSet.add(selectedCompetitor);
         selectedContest.setCompetitors(allCompetitorSet);
 
-        // TODO: NIE DZIALA
         // update
         contestsConverter.update(selectedContest);
 
@@ -185,7 +179,6 @@ public class RegistrationController implements Initializable {
         allCompetitorSet.remove(selectedCompetitor);
         selectedContest.setCompetitors(allCompetitorSet);
 
-        // TODO: NIE DZIALA
         // update
         contestsConverter.update(selectedContest);
 

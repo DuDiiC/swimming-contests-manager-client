@@ -15,6 +15,7 @@ import model.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -236,7 +237,7 @@ public class CompetitorController implements Initializable {
     @FXML public void setCompetitorsFromSelectedClub() throws IOException {
         Club club = clubComboBox2.getSelectionModel().getSelectedItem();
         ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
-        List<Competitor> competitorBaseList = competitorsConverter.getAllByClub(club.getId());
+        List<Competitor> competitorBaseList = (club != null) ? competitorsConverter.getAllByClub(club.getId()) : new ArrayList<>();
         competitorList.setAll(competitorBaseList);
         competitorComboBox.setItems(competitorList);
     }
@@ -278,24 +279,14 @@ public class CompetitorController implements Initializable {
                 competitorTableView.getSelectionModel().getSelectedItem(),
                 competitionComboBox.getSelectionModel().getSelectedItem()
         );
-        // TODO: NAPRAWIC COMPARATOR
-//        Record newRecord = recordsConverter.add(record);
-        List<Record> actualRecords = recordsConverter.getAllByCompetitor(competitorTableView.getSelectionModel().getSelectedItem().getPesel());
-        boolean isInRecords = false;
-        for (Record record : actualRecords) {
-            if (record.getCompetition().getId().equals(newRecord.getCompetition().getId())) {
-//                if (newRecord.compareTo(record) > 0) {
-                    recordsConverter.remove(record.getId());
-                    recordsConverter.add(newRecord);
-//                } else {
-//                    DialogsUtil.errorDialog("Nowy czas jest wolniejszy od już istniejącego!");
-//                }
-                isInRecords = true;
-                break;
-            }
-        }
-        if(!isInRecords) {
-            recordsConverter.add(newRecord);
+
+        Record newRecordAfterAdding =  recordsConverter.add(newRecord);
+        if(newRecord.getMinutes().equals(newRecordAfterAdding.getMinutes()) &&
+                newRecord.getSeconds().equals(newRecordAfterAdding.getSeconds()) &&
+                newRecord.getHundredths().equals(newRecordAfterAdding.getHundredths())) {
+
+        } else {
+            DialogsUtil.errorDialog("Rekord jest wolniejszy od już istniejącego!");
         }
 
         // cleaning
@@ -338,7 +329,7 @@ public class CompetitorController implements Initializable {
     @FXML public void setRecordsForSelectedCompetitor() throws IOException {
         Competitor competitor = competitorTableView.getSelectionModel().getSelectedItem();
         ObservableList<Record> recordList = FXCollections.observableArrayList();
-        List<Record> recordBaseList = recordsConverter.getAllByCompetitor(competitor.getPesel());
+        List<Record> recordBaseList = (competitor != null) ? recordsConverter.getAllByCompetitor(competitor.getPesel()) : new ArrayList<>();
         recordList.setAll(recordBaseList);
         recordTableView.setItems(recordList);
     }

@@ -19,6 +19,7 @@ import model.Trainer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -175,13 +176,13 @@ public class ClubController implements Initializable {
 
         // set trainerTableView
         ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
-        List<Trainer> trainerBaseList = trainersConverter.getAllByClub(club.getId());
+        List<Trainer> trainerBaseList = (club != null) ? trainersConverter.getAllByClub(club.getId()) : new ArrayList<>();
         trainerList.setAll(trainerBaseList);
         trainerTableView.setItems(trainerList);
 
         // set competitorTableView
         ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
-        List<Competitor> competitorBaseList = competitorsConverter.getAllByClub(club.getId());
+        List<Competitor> competitorBaseList = (club != null) ? competitorsConverter.getAllByClub(club.getId()) : new ArrayList<>();
         competitorList.addAll(competitorBaseList);
         competitorTableView.setItems(competitorList);
     }

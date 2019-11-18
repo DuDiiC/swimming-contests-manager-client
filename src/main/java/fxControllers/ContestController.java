@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Controller class for {ContestView.fxml} file.
@@ -185,15 +182,19 @@ public class ContestController implements Initializable {
      * and {@link Competition}s for selected {@link Contest}.
      */
     @FXML public void setCompetitionsAndCompetitorsForSelectedContest() {
-        // TODO: NIE DZIALA
+
         Contest contest = contestTableView.getSelectionModel().getSelectedItem();
+
         // set competitorTableView
         ObservableList<Competitor> competitorList = FXCollections.observableArrayList();
-        competitorList.addAll(contest.getCompetitors());
+        Set<Competitor> competitorBaseSet = (contest != null) ? contest.getCompetitors() : new HashSet<>();
+        competitorList.addAll(competitorBaseSet);
         competitorTableView.setItems(competitorList);
+
         // set competitionTableView
         ObservableList<Competition> competitionList = FXCollections.observableArrayList();
-        competitionList.addAll(contest.getCompetitions());
+        Set<Competition> competitionBaseSet = (contest != null) ? contest.getCompetitions() : new HashSet<>();
+        competitionList.addAll(competitionBaseSet);
         competitionTableView.setItems(competitionList);
     }
 

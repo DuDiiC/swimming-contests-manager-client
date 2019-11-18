@@ -1,5 +1,6 @@
 package fxControllers;
 
+import fxUtils.DialogsUtil;
 import fxUtils.FxmlUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -17,74 +18,6 @@ import java.util.ResourceBundle;
  */
 public class MainBorderPaneController implements Initializable {
 
-    private static final String CLUB_VIEW_FXML = "/fxml/ClubView.fxml";
-    private static final String CONTEST_VIEW_FXML = "/fxml/ContestView.fxml";
-    private static final String COMPETITOR_VIEW_FXML = "/fxml/CompetitorView.fxml";
-    private static final String TRAINER_VIEW_FXML = "/fxml/TrainerView.fxml";
-    private static final String COMPETITION_VIEW_FXML = "/fxml/CompetitionView.fxml";
-    private static final String REGISTRATION_VIEW_FXML = "/fxml/RegistrationView.fxml";
-    private static final String WELCOME_VIEW_FXML = "/fxml/WelcomeView.fxml";
-
-    /**
-     * {@link BorderPane} where application displays every other layouts.
-     */
-    @FXML private BorderPane borderPane;
-
-    /**
-     * {@link ToggleGroup} for all menu options.
-     */
-    @FXML private ToggleGroup tables;
-
-    /**
-     * {@link ToggleButton} for displaying contest layout.
-     */
-    @FXML private ToggleButton contestsButton;
-
-    /**
-     * {@link ToggleButton} for displaying registration layout.
-     */
-    @FXML private ToggleButton registrationButton;
-
-    /**
-     * {@link ToggleButton} for displaying competition layout.
-     */
-    @FXML private ToggleButton competitionsButton;
-
-    /**
-     * {@link ToggleButton} for displaying club layout.
-     */
-    @FXML private ToggleButton clubsButton;
-
-    /**
-     * {@link ToggleButton} for displaying trainer layout.
-     */
-    @FXML private ToggleButton trainersButton;
-
-    /**
-     * {@link ToggleButton} for displaying competitor layout.
-     */
-    @FXML private ToggleButton competitorsButton;
-
-    /**
-     * {@link ImageView} used for close application and database connection.
-     */
-    @FXML private ImageView exitButton;
-
-    /**
-     * {@link TextField} for user's login.
-     */
-    @FXML private TextField loginTextField;
-
-    /**
-     * {@link TextField} for user's psasword.
-     */
-    @FXML private PasswordField passwordTextField;
-
-    /**
-     * {@link Button} to login to the application and the database.
-     */
-    @FXML private Button loginButton;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setButtonsDisable(true);
@@ -97,17 +30,17 @@ public class MainBorderPaneController implements Initializable {
     @FXML private void logIn() {
 
         // personal information about user
-//        String user = loginTextField.getText();
-//        String password = passwordTextField.getText();
+        String user = loginTextField.getText();
+        String password = passwordTextField.getText();
 
-//        if(!(user.equals("admin") && password.equals("123"))) {
-//            DialogsUtil.errorDialog("Niepoprawna nazwa użytkownika lub hasło!");
-//            loginTextField.clear();
-//            passwordTextField.clear();
-//            return;
-//        }
+        if(!(user.equals("admin") && password.equals("123"))) {
+            DialogsUtil.errorDialog("Niepoprawna nazwa użytkownika lub hasło!");
+            loginTextField.clear();
+            passwordTextField.clear();
+            return;
+        }
 
-//        DialogsUtil.informationDialog("Logowanie zakończone sukcesem");
+        DialogsUtil.informationDialog("Logowanie zakończone sukcesem");
 
         setButtonsDisable(false);
 
@@ -199,7 +132,6 @@ public class MainBorderPaneController implements Initializable {
      * Close hibernate connection and application.
      */
     @FXML public void exit() {
-//        if(HibernateUtil.getEm() != null) HibernateUtil.getEm().close();
         Platform.exit();
     }
 
@@ -210,4 +142,74 @@ public class MainBorderPaneController implements Initializable {
     private void setCenter(String fxmlPath) {
         borderPane.setCenter(FxmlUtil.fxmlLoader(fxmlPath));
     }
+
+    // -------------- VARIABLES -------------- //
+
+    private static final String CLUB_VIEW_FXML = "/fxml/ClubView.fxml";
+    private static final String CONTEST_VIEW_FXML = "/fxml/ContestView.fxml";
+    private static final String COMPETITOR_VIEW_FXML = "/fxml/CompetitorView.fxml";
+    private static final String TRAINER_VIEW_FXML = "/fxml/TrainerView.fxml";
+    private static final String COMPETITION_VIEW_FXML = "/fxml/CompetitionView.fxml";
+    private static final String REGISTRATION_VIEW_FXML = "/fxml/RegistrationView.fxml";
+    private static final String WELCOME_VIEW_FXML = "/fxml/WelcomeView.fxml";
+
+    /**
+     * {@link BorderPane} where application displays every other layouts.
+     */
+    @FXML private BorderPane borderPane;
+
+    /**
+     * {@link ToggleGroup} for all menu options.
+     */
+    @FXML private ToggleGroup tables;
+
+    /**
+     * {@link ToggleButton} for displaying contest layout.
+     */
+    @FXML private ToggleButton contestsButton;
+
+    /**
+     * {@link ToggleButton} for displaying registration layout.
+     */
+    @FXML private ToggleButton registrationButton;
+
+    /**
+     * {@link ToggleButton} for displaying competition layout.
+     */
+    @FXML private ToggleButton competitionsButton;
+
+    /**
+     * {@link ToggleButton} for displaying club layout.
+     */
+    @FXML private ToggleButton clubsButton;
+
+    /**
+     * {@link ToggleButton} for displaying trainer layout.
+     */
+    @FXML private ToggleButton trainersButton;
+
+    /**
+     * {@link ToggleButton} for displaying competitor layout.
+     */
+    @FXML private ToggleButton competitorsButton;
+
+    /**
+     * {@link ImageView} used for close application and database connection.
+     */
+    @FXML private ImageView exitButton;
+
+    /**
+     * {@link TextField} for user's login.
+     */
+    @FXML private TextField loginTextField;
+
+    /**
+     * {@link TextField} for user's psasword.
+     */
+    @FXML private PasswordField passwordTextField;
+
+    /**
+     * {@link Button} to login to the application and the database.
+     */
+    @FXML private Button loginButton;
 }

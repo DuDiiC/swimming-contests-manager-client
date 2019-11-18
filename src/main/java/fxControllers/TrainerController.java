@@ -17,6 +17,7 @@ import model.Trainer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -166,8 +167,9 @@ public class TrainerController implements Initializable {
         trainersConverter.remove(trainer.getLicenceNr());
 
         // clearing
-        trainerComboBox.setItems(null);
         clubComboBox2.getSelectionModel().clearSelection();
+        trainerTableView.getSelectionModel().clearSelection();
+        trainerComboBox.setItems(null);
 
         // refresh view
         ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
@@ -183,7 +185,7 @@ public class TrainerController implements Initializable {
     @FXML public void setTrainersFromSelectedClub() throws IOException {
         Club club = clubComboBox2.getSelectionModel().getSelectedItem();
         ObservableList<Trainer> trainerList = FXCollections.observableArrayList();
-        List<Trainer> trainerBaseList = trainersConverter.getAllByClub(club.getId());
+        List<Trainer> trainerBaseList = (club != null) ? trainersConverter.getAllByClub(club.getId()) : new ArrayList<>();
         trainerList.setAll(trainerBaseList);
         trainerComboBox.setItems(trainerList);
     }
