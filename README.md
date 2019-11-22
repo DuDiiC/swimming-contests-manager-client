@@ -16,3 +16,20 @@ The project was created using **Java 8** with the **JavaFX** to create cross-pla
 - adding, removing clubs and browsing them with trainers and players
 - adding, removing and managing competitors (adding records, singing up for the contests)
 - adding and removing trainers
+
+## Screens from application:
+
+1. Login screen
+![](app-screens/screen01.jpg)
+2. Contests screen
+![](app-screens/screen02.jpg)
+3. Registration screen
+![](app-screens/screen03.jpg)
+4. Competitions screen
+![](app-screens/screen04.jpg)
+5. Clubs screen
+![](app-screens/screen05.jpg)
+6. Trainers screen
+![](app-screens/screen06.jpg)
+7. Competitors screen
+![](app-screens/screen07.jpg)
