@@ -20,16 +20,16 @@ The project was created using **Java 8** with the **JavaFX** to create cross-pla
 ## Screens from application:
 
 1. Login screen
-![](app-screens/screen01.jpg)
+![](app-screens/Screen01.jpg)
 2. Contests screen
-![](app-screens/screen02.jpg)
+![](app-screens/Screen02.jpg)
 3. Registration screen
-![](app-screens/screen03.jpg)
+![](app-screens/Screen03.jpg)
 4. Competitions screen
-![](app-screens/screen04.jpg)
+![](app-screens/Screen04.jpg)
 5. Clubs screen
-![](app-screens/screen05.jpg)
+![](app-screens/Screen05.jpg)
 6. Trainers screen
-![](app-screens/screen06.jpg)
+![](app-screens/Screen06.jpg)
 7. Competitors screen
-![](app-screens/screen07.jpg)
+![](app-screens/Screen07.jpg)
